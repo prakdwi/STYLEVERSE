@@ -4,7 +4,7 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Cube, Shirt, Upload, User } from 'lucide-react';
+import { Box, Shirt, Upload, User } from 'lucide-react';
 import AIRecommender from '@/components/AIRecommender';
 import type { ModelType } from '@/app/page';
 
@@ -39,7 +39,7 @@ const ModelControls: FC<ModelControlsProps> = ({ setModel, setStyleImageUrl }) =
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid grid-cols-2 gap-2">
-              <Button variant="outline" onClick={() => setModel('cube')}><Cube className="mr-2"/>Cube</Button>
+              <Button variant="outline" onClick={() => setModel('cube')}><Box className="mr-2"/>Cube</Button>
               <Button variant="outline" onClick={() => setModel('jacket')}><Shirt className="mr-2"/>Jacket</Button>
               <Button variant="outline" onClick={() => setModel('shirt')}><Shirt className="mr-2"/>Shirt</Button>
               <Button variant="outline" onClick={() => setModel('person')}><User className="mr-2"/>Person</Button>
