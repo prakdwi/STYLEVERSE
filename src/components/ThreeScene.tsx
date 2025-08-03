@@ -21,6 +21,18 @@ const ThreeScene: FC<ThreeSceneProps> = ({ model, modelUrl, material, lightInten
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
   const meshRef = useRef<THREE.Mesh | THREE.Object3D | null>(null);
   const lightRef = useRef<THREE.DirectionalLight | null>(null);
+  const requestRef = useRef<number>();
+
+  const animate = () => {
+    requestRef.current = requestAnimationFrame(animate);
+    if (meshRef.current) {
+      meshRef.current.rotation.x += 0.005;
+      meshRef.current.rotation.y += 0.005;
+    }
+    if (rendererRef.current && sceneRef.current && cameraRef.current) {
+      rendererRef.current.render(sceneRef.current, cameraRef.current);
+    }
+  };
 
   useEffect(() => {
     if (!mountRef.current) return;
@@ -41,8 +53,8 @@ const ThreeScene: FC<ThreeSceneProps> = ({ model, modelUrl, material, lightInten
     const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
     renderer.setSize(currentMount.clientWidth, currentMount.clientHeight);
     renderer.setPixelRatio(window.devicePixelRatio);
-    currentMount.appendChild(renderer.domElement);
     rendererRef.current = renderer;
+    currentMount.appendChild(renderer.domElement);
 
     // Lighting
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
@@ -59,16 +71,8 @@ const ThreeScene: FC<ThreeSceneProps> = ({ model, modelUrl, material, lightInten
     scene.add(cube);
     meshRef.current = cube;
     
-    // Animation loop
-    const animate = () => {
-      requestAnimationFrame(animate);
-      if (meshRef.current) {
-        meshRef.current.rotation.x += 0.005;
-        meshRef.current.rotation.y += 0.005;
-      }
-      renderer.render(scene, camera);
-    };
-    animate();
+    // Start animation
+    requestRef.current = requestAnimationFrame(animate);
 
     // Resize handler
     const handleResize = () => {
@@ -95,6 +99,7 @@ const ThreeScene: FC<ThreeSceneProps> = ({ model, modelUrl, material, lightInten
 
     // Cleanup
     return () => {
+      if(requestRef.current) cancelAnimationFrame(requestRef.current);
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('snapshot', takeSnapshot);
       if (currentMount && renderer.domElement) {
@@ -155,33 +160,59 @@ const ThreeScene: FC<ThreeSceneProps> = ({ model, modelUrl, material, lightInten
       scene.remove(meshRef.current);
     }
   
-    const loader = url.endsWith('.glb') || url.endsWith('.gltf') ? new GLTFLoader() : new OBJLoader();
-    
-    loader.load(url, (object) => {
-      // For GLTF, the model is in object.scene
-      const model = object.scene || object;
-      
-      const box = new THREE.Box3().setFromObject(model);
-      const center = box.getCenter(new THREE.Vector3());
-      const size = box.getSize(new THREE.Vector3());
-      const maxDim = Math.max(size.x, size.y, size.z);
-      const scale = 4 / maxDim;
-      
-      model.position.sub(center.multiplyScalar(scale));
-      model.scale.set(scale, scale, scale);
+    const onModelLoaded = (object: THREE.Group | THREE.Object3D) => {
+        const model = object.type === 'Group' ? object : object;
+        
+        const box = new THREE.Box3().setFromObject(model);
+        const center = box.getCenter(new THREE.Vector3());
+        const size = box.getSize(new THREE.Vector3());
+        const maxDim = Math.max(size.x, size.y, size.z);
+        const scale = 4 / maxDim;
+        
+        model.position.sub(center.multiplyScalar(scale));
+        model.scale.set(scale, scale, scale);
+  
+        scene.add(model);
+        meshRef.current = model;
+        
+        // This is a bit of a hack to re-apply the material.
+        const currentMaterialType = material;
+        let newMaterial;
+        const textureLoader = new THREE.TextureLoader();
+        const texture = styleImageUrl ? textureLoader.load(styleImageUrl) : null;
+        if(texture) texture.colorSpace = THREE.SRGBColorSpace;
 
-      scene.add(model);
-      meshRef.current = model;
-      // Re-apply current material to new model
-      if (meshRef.current) {
-        // This is a bit of a hack, we should re-create the material
-        // but this will trigger the material useEffect again.
-        const currentMaterial = (meshRef.current as any).material;
-        applyMaterial(meshRef.current, currentMaterial);
-      }
-    }, undefined, (error) => {
-      console.error('An error happened while loading the model:', error);
-    });
+        const materialProps: THREE.MeshStandardMaterialParameters = {
+            map: texture,
+            color: texture ? 0xffffff : 0x9B5DE5
+        };
+
+        switch (currentMaterialType) {
+            case 'metallic':
+                newMaterial = new THREE.MeshStandardMaterial({ ...materialProps, metalness: 0.9, roughness: 0.1 });
+                break;
+            case 'wireframe':
+                newMaterial = new THREE.MeshBasicMaterial({ color: 0x00F5D4, wireframe: true });
+                break;
+            case 'matte':
+            default:
+                newMaterial = new THREE.MeshStandardMaterial({ ...materialProps, metalness: 0.1, roughness: 0.8 });
+                break;
+        }
+        applyMaterial(meshRef.current, newMaterial);
+    };
+
+    if (url.endsWith('.glb') || url.endsWith('.gltf')) {
+        const loader = new GLTFLoader();
+        loader.load(url, (gltf) => onModelLoaded(gltf.scene), undefined, (error) => {
+          console.error('An error happened while loading the GLB model:', error);
+        });
+    } else {
+        const loader = new OBJLoader();
+        loader.load(url, onModelLoaded, undefined, (error) => {
+          console.error('An error happened while loading the OBJ model:', error);
+        });
+    }
   };
 
   useEffect(() => {
@@ -189,7 +220,6 @@ const ThreeScene: FC<ThreeSceneProps> = ({ model, modelUrl, material, lightInten
       loadModel(modelUrl);
     } else {
       if (meshRef.current && sceneRef.current) {
-        const currentMaterial = (meshRef.current as any).material;
         sceneRef.current.remove(meshRef.current);
         let newGeometry: THREE.BufferGeometry;
         switch (model) {
@@ -204,6 +234,8 @@ const ThreeScene: FC<ThreeSceneProps> = ({ model, modelUrl, material, lightInten
             newGeometry = new THREE.BoxGeometry(2, 2, 2);
             break;
         }
+
+        const currentMaterial = (meshRef.current as any).material || new THREE.MeshStandardMaterial({ color: 0x9B5DE5 });
         const newMesh = new THREE.Mesh(newGeometry, currentMaterial);
         sceneRef.current.add(newMesh);
         meshRef.current = newMesh;
