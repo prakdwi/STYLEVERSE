@@ -1,34 +1,78 @@
 'use client';
 import type { FC, Dispatch, SetStateAction } from 'react';
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Box, Circle, Upload, ToyBrick } from 'lucide-react';
+import { Box, Circle, Upload, ToyBrick, Wand2 } from 'lucide-react';
 import type { ModelType } from '@/app/page';
+import { generateStyle } from '@/app/actions';
+import { useToast } from '@/hooks/use-toast';
+import { Textarea } from './ui/textarea';
+import { Label } from './ui/label';
+import { Progress } from './ui/progress';
 
 interface ModelControlsProps {
   setModel: Dispatch<SetStateAction<ModelType>>;
-  setStyleImageUrl: Dispatch<SetStateAction<string | null>>;
   setModelUrl: Dispatch<SetStateAction<string | null>>;
+  setGeneratedTexture: Dispatch<SetStateAction<string | null>>;
 }
 
 const glassmorphismClass = "bg-white/5 border border-white/10 backdrop-blur-md";
 
-const ModelControls: FC<ModelControlsProps> = ({ setModel, setStyleImageUrl, setModelUrl }) => {
-  
-  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files[0]) {
-      const file = event.target.files[0];
-      setStyleImageUrl(URL.createObjectURL(file));
-    }
-  };
+const ModelControls: FC<ModelControlsProps> = ({ setModel, setModelUrl, setGeneratedTexture }) => {
+  const { toast } = useToast();
+  const [styleImageUrl, setStyleImageUrl] = useState<string | null>(null);
+  const [prompt, setPrompt] = useState<string>('a cosmic nebula');
+  const [isGenerating, setIsGenerating] = useState(false);
 
   const handleModelUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       const file = event.target.files[0];
       setModelUrl(URL.createObjectURL(file));
     }
+  };
+  
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files[0]) {
+      const file = event.target.files[0];
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setStyleImageUrl(e.target?.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleGenerateStyle = async () => {
+    if (!styleImageUrl) {
+      toast({
+        title: 'Error',
+        description: 'Please upload a style image first.',
+        variant: 'destructive',
+      });
+      return;
+    }
+    
+    setIsGenerating(true);
+    setGeneratedTexture(null);
+
+    const result = await generateStyle(styleImageUrl, prompt);
+    
+    if(result.success) {
+      setGeneratedTexture(result.texture);
+      toast({
+        title: 'Success!',
+        description: 'New texture generated and applied.',
+      });
+    } else {
+      toast({
+        title: 'Error',
+        description: result.error,
+        variant: 'destructive',
+      });
+    }
+    setIsGenerating(false);
   };
 
   return (
@@ -60,18 +104,30 @@ const ModelControls: FC<ModelControlsProps> = ({ setModel, setStyleImageUrl, set
       <TabsContent value="styles" className="flex-grow mt-4">
         <Card className={glassmorphismClass}>
           <CardHeader>
-            <CardTitle>Style Input</CardTitle>
-            <CardDescription>Upload an image to apply as a texture.</CardDescription>
+            <CardTitle>AI Style Transfer</CardTitle>
+            <CardDescription>Generate a texture with AI.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <input type="file" id="image-upload" className="hidden" accept="image/*" onChange={handleImageUpload} />
             <Button className="w-full" onClick={() => document.getElementById('image-upload')?.click()}>
               <Upload className="mr-2" />
-              Upload Style Image
+              {styleImageUrl ? 'Change' : 'Upload'} Style Image
             </Button>
-            <div className="text-center text-muted-foreground p-4 border-2 border-dashed rounded-lg">
-              Gradient Editor (Coming Soon)
+
+            {styleImageUrl && <img src={styleImageUrl} alt="Style preview" className="rounded-md object-cover w-full h-32" />}
+            
+            <div className="space-y-2">
+              <Label htmlFor="prompt">Style Prompt</Label>
+              <Textarea id="prompt" value={prompt} onChange={(e) => setPrompt(e.target.value)} placeholder="e.g., a vibrant graffiti wall" />
             </div>
+
+            <Button className="w-full" onClick={handleGenerateStyle} disabled={isGenerating || !styleImageUrl}>
+              <Wand2 className="mr-2"/>
+              {isGenerating ? 'Generating...' : 'Generate Style'}
+            </Button>
+            
+            {isGenerating && <Progress value={undefined} className="w-full" />}
+
           </CardContent>
         </Card>
       </TabsContent>

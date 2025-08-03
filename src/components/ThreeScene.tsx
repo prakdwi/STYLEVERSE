@@ -11,10 +11,10 @@ interface ThreeSceneProps {
   modelUrl: string | null;
   material: MaterialType;
   lightIntensity: number;
-  styleImageUrl: string | null;
+  generatedTexture: string | null;
 }
 
-const ThreeScene: FC<ThreeSceneProps> = ({ model, modelUrl, material, lightIntensity, styleImageUrl }) => {
+const ThreeScene: FC<ThreeSceneProps> = ({ model, modelUrl, material, lightIntensity, generatedTexture }) => {
   const mountRef = useRef<HTMLDivElement>(null);
   const sceneRef = useRef<THREE.Scene | null>(null);
   const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
@@ -122,12 +122,12 @@ const ThreeScene: FC<ThreeSceneProps> = ({ model, modelUrl, material, lightInten
     object.children.forEach(child => applyMaterial(child, newMaterial));
   };
   
-  // Update material
+  // Update material and texture
   useEffect(() => {
     if (meshRef.current) {
         let newMaterial;
         const textureLoader = new THREE.TextureLoader();
-        const texture = styleImageUrl ? textureLoader.load(styleImageUrl) : null;
+        const texture = generatedTexture ? textureLoader.load(generatedTexture) : null;
         if(texture) texture.colorSpace = THREE.SRGBColorSpace;
 
         const materialProps: THREE.MeshStandardMaterialParameters = {
@@ -149,7 +149,7 @@ const ThreeScene: FC<ThreeSceneProps> = ({ model, modelUrl, material, lightInten
         }
         applyMaterial(meshRef.current, newMaterial);
     }
-  }, [material, styleImageUrl]);
+  }, [material, generatedTexture]);
 
 
   const loadModel = (url: string) => {
@@ -175,11 +175,11 @@ const ThreeScene: FC<ThreeSceneProps> = ({ model, modelUrl, material, lightInten
         scene.add(model);
         meshRef.current = model;
         
-        // This is a bit of a hack to re-apply the material.
+        // Re-apply the material/texture after loading the new model
         const currentMaterialType = material;
         let newMaterial;
         const textureLoader = new THREE.TextureLoader();
-        const texture = styleImageUrl ? textureLoader.load(styleImageUrl) : null;
+        const texture = generatedTexture ? textureLoader.load(generatedTexture) : null;
         if(texture) texture.colorSpace = THREE.SRGBColorSpace;
 
         const materialProps: THREE.MeshStandardMaterialParameters = {
