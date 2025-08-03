@@ -4,18 +4,18 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Box, Shirt, Upload, User } from 'lucide-react';
-import AIRecommender from '@/components/AIRecommender';
+import { Box, Circle, Upload, ToyBrick } from 'lucide-react';
 import type { ModelType } from '@/app/page';
 
 interface ModelControlsProps {
   setModel: Dispatch<SetStateAction<ModelType>>;
   setStyleImageUrl: Dispatch<SetStateAction<string | null>>;
+  setModelUrl: Dispatch<SetStateAction<string | null>>;
 }
 
 const glassmorphismClass = "bg-white/5 border border-white/10 backdrop-blur-md";
 
-const ModelControls: FC<ModelControlsProps> = ({ setModel, setStyleImageUrl }) => {
+const ModelControls: FC<ModelControlsProps> = ({ setModel, setStyleImageUrl, setModelUrl }) => {
   
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
@@ -24,12 +24,18 @@ const ModelControls: FC<ModelControlsProps> = ({ setModel, setStyleImageUrl }) =
     }
   };
 
+  const handleModelUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files[0]) {
+      const file = event.target.files[0];
+      setModelUrl(URL.createObjectURL(file));
+    }
+  };
+
   return (
     <Tabs defaultValue="models" className="w-full flex flex-col h-full">
-      <TabsList className="grid w-full grid-cols-3">
+      <TabsList className="grid w-full grid-cols-2">
         <TabsTrigger value="models">Models</TabsTrigger>
         <TabsTrigger value="styles">Styles</TabsTrigger>
-        <TabsTrigger value="ai">AI</TabsTrigger>
       </TabsList>
       <TabsContent value="models" className="flex-grow mt-4">
         <Card className={glassmorphismClass}>
@@ -39,12 +45,12 @@ const ModelControls: FC<ModelControlsProps> = ({ setModel, setStyleImageUrl }) =
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid grid-cols-2 gap-2">
-              <Button variant="outline" onClick={() => setModel('cube')}><Box className="mr-2"/>Cube</Button>
-              <Button variant="outline" onClick={() => setModel('jacket')}><Shirt className="mr-2"/>Jacket</Button>
-              <Button variant="outline" onClick={() => setModel('shirt')}><Shirt className="mr-2"/>Shirt</Button>
-              <Button variant="outline" onClick={() => setModel('person')}><User className="mr-2"/>Person</Button>
+              <Button variant="outline" onClick={() => { setModel('cube'); setModelUrl(null); }}><Box className="mr-2"/>Cube</Button>
+              <Button variant="outline" onClick={() => { setModel('sphere'); setModelUrl(null); }}><Circle className="mr-2"/>Sphere</Button>
+              <Button variant="outline" onClick={() => { setModel('torus'); setModelUrl(null); }}><ToyBrick className="mr-2"/>Torus</Button>
             </div>
-            <Button className="w-full">
+            <input type="file" id="model-upload" className="hidden" accept=".obj,.glb" onChange={handleModelUpload} />
+            <Button className="w-full" onClick={() => document.getElementById('model-upload')?.click()}>
               <Upload className="mr-2" />
               Upload .obj/.glb
             </Button>
@@ -55,7 +61,7 @@ const ModelControls: FC<ModelControlsProps> = ({ setModel, setStyleImageUrl }) =
         <Card className={glassmorphismClass}>
           <CardHeader>
             <CardTitle>Style Input</CardTitle>
-            <CardDescription>Upload an image or use the gradient editor.</CardDescription>
+            <CardDescription>Upload an image to apply as a texture.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <input type="file" id="image-upload" className="hidden" accept="image/*" onChange={handleImageUpload} />
@@ -68,9 +74,6 @@ const ModelControls: FC<ModelControlsProps> = ({ setModel, setStyleImageUrl }) =
             </div>
           </CardContent>
         </Card>
-      </TabsContent>
-      <TabsContent value="ai" className="flex-grow mt-4">
-        <AIRecommender />
       </TabsContent>
     </Tabs>
   );

@@ -6,11 +6,10 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
-import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Slider } from '@/components/ui/slider';
-import { Camera, Move3d, Palette, Sun } from 'lucide-react';
+import { Palette, Sun } from 'lucide-react';
 import type { MaterialType } from '@/app/page';
 
 interface CustomizationControlsProps {
@@ -48,7 +47,7 @@ const CustomizationControls: FC<CustomizationControlsProps> = ({
         <AccordionTrigger>
           <Palette className="mr-2"/> Material
         </AccordionTrigger>
-        <AccordionContent className="p-1">
+        <AccordionContent className="p-1 space-y-2">
           <RadioGroup value={material} onValueChange={(value: MaterialType) => setMaterial(value)}>
             <div className="flex items-center space-x-2">
               <RadioGroupItem value="matte" id="matte" />
@@ -63,17 +62,6 @@ const CustomizationControls: FC<CustomizationControlsProps> = ({
               <Label htmlFor="wireframe">Wireframe</Label>
             </div>
           </RadioGroup>
-        </AccordionContent>
-      </AccordionItem>
-      <AccordionItem value="camera">
-        <AccordionTrigger>
-          <Camera className="mr-2"/> Camera Angles
-        </AccordionTrigger>
-        <AccordionContent className="grid grid-cols-2 gap-2 p-1">
-          <Button variant="outline">Front</Button>
-          <Button variant="outline">Back</Button>
-          <Button variant="outline">Top</Button>
-          <Button variant="outline">Side</Button>
         </AccordionContent>
       </AccordionItem>
     </Accordion>
