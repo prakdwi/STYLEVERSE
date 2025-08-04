@@ -4,6 +4,7 @@ import React, { useRef, useEffect } from 'react';
 import * as THREE from 'three';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import type { ModelType, MaterialType } from '@/app/page';
 
 interface ThreeSceneProps {
@@ -21,13 +22,13 @@ const ThreeScene: FC<ThreeSceneProps> = ({ model, modelUrl, material, lightInten
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
   const meshRef = useRef<THREE.Mesh | THREE.Object3D | null>(null);
   const lightRef = useRef<THREE.DirectionalLight | null>(null);
+  const controlsRef = useRef<OrbitControls | null>(null);
   const requestRef = useRef<number>();
 
   const animate = () => {
     requestRef.current = requestAnimationFrame(animate);
-    if (meshRef.current) {
-      meshRef.current.rotation.x += 0.005;
-      meshRef.current.rotation.y += 0.005;
+    if (controlsRef.current) {
+      controlsRef.current.update();
     }
     if (rendererRef.current && sceneRef.current && cameraRef.current) {
       rendererRef.current.render(sceneRef.current, cameraRef.current);
@@ -55,6 +56,11 @@ const ThreeScene: FC<ThreeSceneProps> = ({ model, modelUrl, material, lightInten
     renderer.setPixelRatio(window.devicePixelRatio);
     rendererRef.current = renderer;
     currentMount.appendChild(renderer.domElement);
+    
+    // Controls
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controlsRef.current = controls;
 
     // Lighting
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
@@ -102,6 +108,7 @@ const ThreeScene: FC<ThreeSceneProps> = ({ model, modelUrl, material, lightInten
       if(requestRef.current) cancelAnimationFrame(requestRef.current);
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('snapshot', takeSnapshot);
+      if(controlsRef.current) controlsRef.current.dispose();
       if (currentMount && renderer.domElement) {
         currentMount.removeChild(renderer.domElement);
       }

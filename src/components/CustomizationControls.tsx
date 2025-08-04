@@ -31,24 +31,26 @@ const CustomizationControls: FC<CustomizationControlsProps> = ({
         <AccordionTrigger>
           <Sun className="mr-2"/> Environment
         </AccordionTrigger>
-        <AccordionContent className="space-y-4 p-1">
-          <Label htmlFor="light-intensity">Light Intensity</Label>
-          <Slider
-            id="light-intensity"
-            min={0}
-            max={5}
-            step={0.1}
-            value={[lightIntensity]}
-            onValueChange={(value) => setLightIntensity(value[0])}
-          />
+        <AccordionContent className="space-y-4 p-2">
+          <div className="space-y-2">
+            <Label htmlFor="light-intensity">Light Intensity</Label>
+            <Slider
+              id="light-intensity"
+              min={0}
+              max={5}
+              step={0.1}
+              value={[lightIntensity]}
+              onValueChange={(value) => setLightIntensity(value[0])}
+            />
+          </div>
         </AccordionContent>
       </AccordionItem>
       <AccordionItem value="material">
         <AccordionTrigger>
           <Palette className="mr-2"/> Material
         </AccordionTrigger>
-        <AccordionContent className="p-1 space-y-2">
-          <RadioGroup value={material} onValueChange={(value: MaterialType) => setMaterial(value)}>
+        <AccordionContent className="p-2">
+          <RadioGroup value={material} onValueChange={(value: MaterialType) => setMaterial(value)} className="space-y-2">
             <div className="flex items-center space-x-2">
               <RadioGroupItem value="matte" id="matte" />
               <Label htmlFor="matte">Matte</Label>
