@@ -28,12 +28,15 @@ const ModelControls: FC<ModelControlsProps> = ({ setModelInfo, setGeneratedTextu
       const file = event.target.files[0];
       const url = URL.createObjectURL(file);
       const fileExtension = file.name.split('.').pop()?.toLowerCase();
+      
       if (fileExtension === 'glb' || fileExtension === 'gltf') {
-        setModelInfo({ type: 'url', url: url });
+        setModelInfo({ type: 'url', url: url, fileType: 'glb' });
+      } else if (fileExtension === 'obj') {
+        setModelInfo({ type: 'url', url: url, fileType: 'obj' });
       } else {
         toast({
           title: 'Error',
-          description: 'Please upload a .glb or .gltf file.',
+          description: 'Please upload a .glb, .gltf, or .obj file.',
           variant: 'destructive',
         });
       }
@@ -110,10 +113,10 @@ const ModelControls: FC<ModelControlsProps> = ({ setModelInfo, setGeneratedTextu
               <Button variant="outline" className="text-lg font-bold border-primary hover:bg-primary hover:text-white text-[#1B1B1B]" onClick={() => setModelInfo({ type: 'shape', shape: 'knot' })}><GitCommit className="mr-2"/>Knot</Button>
               <Button variant="outline" className="text-lg font-bold border-primary hover:bg-primary hover:text-white text-[#1B1B1B]" onClick={() => setModelInfo({ type: 'shape', shape: 'pyramid' })}><Pyramid className="mr-2"/>Pyramid</Button>
             </div>
-            <input type="file" id="model-upload" className="hidden" accept=".glb,.gltf" onChange={handleModelUpload} />
+            <input type="file" id="model-upload" className="hidden" accept=".glb,.gltf,.obj" onChange={handleModelUpload} />
             <Button variant="outline" className="w-full h-12 text-lg font-bold" onClick={() => document.getElementById('model-upload')?.click()}>
               <Upload className="mr-2" />
-              Upload .glb
+              Upload Model
             </Button>
           </CardContent>
         </Card>

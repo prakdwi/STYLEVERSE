@@ -3,6 +3,7 @@ import type { FC } from 'react';
 import React, { useRef, useEffect } from 'react';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import type { ModelInfo, MaterialType } from '@/app/page';
 
@@ -168,7 +169,7 @@ const ThreeScene: FC<ThreeSceneProps> = ({ modelInfo, material, lightIntensity, 
   }, [material, generatedTexture]);
 
 
-  const loadModel = (url: string) => {
+  const loadModel = (url: string, fileType: 'glb' | 'obj') => {
     const scene = sceneRef.current;
     if (!scene) return;
   
@@ -176,64 +177,71 @@ const ThreeScene: FC<ThreeSceneProps> = ({ modelInfo, material, lightIntensity, 
       scene.remove(meshRef.current);
     }
   
-    const loader = new GLTFLoader();
-    loader.load(url, (gltf) => {
-        const model = gltf.scene;
-        
-        const box = new THREE.Box3().setFromObject(model);
-        const center = box.getCenter(new THREE.Vector3());
-        const size = box.getSize(new THREE.Vector3());
-        const maxDim = Math.max(size.x, size.y, size.z);
-        const scale = 4 / maxDim;
-        
-        model.position.sub(center.multiplyScalar(scale));
-        model.scale.set(scale, scale, scale);
-  
-        scene.add(model);
-        meshRef.current = model;
-        
-        // Re-apply the material/texture after loading the new model
-        const currentMaterialType = material;
-        let newMaterial;
-        const textureLoader = new THREE.TextureLoader();
-        const texture = generatedTexture ? textureLoader.load(generatedTexture) : null;
-        if(texture) texture.colorSpace = THREE.SRGBColorSpace;
+    const onModelLoad = (model: THREE.Group) => {
+      const box = new THREE.Box3().setFromObject(model);
+      const center = box.getCenter(new THREE.Vector3());
+      const size = box.getSize(new THREE.Vector3());
+      const maxDim = Math.max(size.x, size.y, size.z);
+      const scale = 4 / maxDim;
+      
+      model.position.sub(center.multiplyScalar(scale));
+      model.scale.set(scale, scale, scale);
 
-        const materialProps: THREE.MeshStandardMaterialParameters = {
-            map: texture,
-            color: texture ? 0xffffff : 0x00F5D4
-        };
+      scene.add(model);
+      meshRef.current = model;
+      
+      // Re-apply the material/texture after loading the new model
+      const currentMaterialType = material;
+      let newMaterial;
+      const textureLoader = new THREE.TextureLoader();
+      const texture = generatedTexture ? textureLoader.load(generatedTexture) : null;
+      if(texture) texture.colorSpace = THREE.SRGBColorSpace;
 
-        switch (currentMaterialType) {
-            case 'metallic':
-                newMaterial = new THREE.MeshStandardMaterial({ ...materialProps, metalness: 0.9, roughness: 0.1 });
-                break;
-            case 'wireframe':
-                newMaterial = new THREE.MeshBasicMaterial({ color: 0xFF4D6D, wireframe: true });
-                break;
-            case 'cotton':
-                newMaterial = new THREE.MeshStandardMaterial({ ...materialProps, metalness: 0.0, roughness: 0.8 });
-                break;
-            case 'silk':
-                newMaterial = new THREE.MeshStandardMaterial({ ...materialProps, metalness: 0.1, roughness: 0.1, clearcoat: 0.9 });
-                break;
-            case 'denim':
-                newMaterial = new THREE.MeshStandardMaterial({ ...materialProps, metalness: 0.2, roughness: 0.7 });
-                break;
-            case 'matte':
-            default:
-                newMaterial = new THREE.MeshStandardMaterial({ ...materialProps, metalness: 0.1, roughness: 0.9 });
-                break;
-        }
-        applyMaterial(meshRef.current, newMaterial);
-    }, undefined, (error) => {
-        console.error('An error happened while loading the model:', error);
-    });
+      const materialProps: THREE.MeshStandardMaterialParameters = {
+          map: texture,
+          color: texture ? 0xffffff : 0x00F5D4
+      };
+
+      switch (currentMaterialType) {
+          case 'metallic':
+              newMaterial = new THREE.MeshStandardMaterial({ ...materialProps, metalness: 0.9, roughness: 0.1 });
+              break;
+          case 'wireframe':
+              newMaterial = new THREE.MeshBasicMaterial({ color: 0xFF4D6D, wireframe: true });
+              break;
+          case 'cotton':
+              newMaterial = new THREE.MeshStandardMaterial({ ...materialProps, metalness: 0.0, roughness: 0.8 });
+              break;
+          case 'silk':
+              newMaterial = new THREE.MeshStandardMaterial({ ...materialProps, metalness: 0.1, roughness: 0.1, clearcoat: 0.9 });
+              break;
+          case 'denim':
+              newMaterial = new THREE.MeshStandardMaterial({ ...materialProps, metalness: 0.2, roughness: 0.7 });
+              break;
+          case 'matte':
+          default:
+              newMaterial = new THREE.MeshStandardMaterial({ ...materialProps, metalness: 0.1, roughness: 0.9 });
+              break;
+      }
+      applyMaterial(meshRef.current, newMaterial);
+    }
+
+    const onError = (error: any) => {
+      console.error('An error happened while loading the model:', error);
+    }
+
+    if (fileType === 'obj') {
+      const loader = new OBJLoader();
+      loader.load(url, onModelLoad, undefined, onError);
+    } else {
+      const loader = new GLTFLoader();
+      loader.load(url, (gltf) => onModelLoad(gltf.scene), undefined, onError);
+    }
   };
 
   useEffect(() => {
     if (modelInfo.type === 'url') {
-      loadModel(modelInfo.url);
+      loadModel(modelInfo.url, modelInfo.fileType);
     } else {
       const scene = sceneRef.current;
       if (scene && meshRef.current) {
