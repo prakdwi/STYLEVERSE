@@ -1,6 +1,6 @@
 'use server';
 /**
- * @fileOverview A flow for generating a texture based on a style image and a prompt.
+ * @fileOverview A flow for generating a texture based on a style image.
  * 
  * - generateStyleFlow - A function that handles the texture generation process.
  */
@@ -12,7 +12,7 @@ async function generateStyle(input: GenerateStyleInput) {
     const { media } = await ai.generate({
       model: 'googleai/gemini-2.0-flash-preview-image-generation',
       prompt: [
-        {text: `Generate a seamless texture. The texture should be in the style of the attached image, and match the following description: ${input.prompt}.`},
+        {text: 'Generate a seamless texture in the style of the attached image.'},
         {media: { url: input.styleImageDataUri }}
       ],
       config: {

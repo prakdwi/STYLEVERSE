@@ -8,8 +8,6 @@ import { Box, Circle, Upload, ToyBrick, Wand2 } from 'lucide-react';
 import type { ModelType } from '@/app/page';
 import { generateStyle } from '@/app/actions';
 import { useToast } from '@/hooks/use-toast';
-import { Textarea } from './ui/textarea';
-import { Label } from './ui/label';
 import { Progress } from './ui/progress';
 
 interface ModelControlsProps {
@@ -21,7 +19,6 @@ interface ModelControlsProps {
 const ModelControls: FC<ModelControlsProps> = ({ setModel, setModelUrl, setGeneratedTexture }) => {
   const { toast } = useToast();
   const [styleImageUrl, setStyleImageUrl] = useState<string | null>(null);
-  const [prompt, setPrompt] = useState<string>('a cosmic nebula');
   const [isGenerating, setIsGenerating] = useState(false);
 
   const handleModelUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -46,7 +43,7 @@ const ModelControls: FC<ModelControlsProps> = ({ setModel, setModelUrl, setGener
     if (!styleImageUrl) {
       toast({
         title: 'Error',
-        description: 'Please upload a style image first.',
+        description: 'Please upload or select a style image first.',
         variant: 'destructive',
       });
       return;
@@ -55,7 +52,7 @@ const ModelControls: FC<ModelControlsProps> = ({ setModel, setModelUrl, setGener
     setIsGenerating(true);
     setGeneratedTexture(null);
 
-    const result = await generateStyle(styleImageUrl, prompt);
+    const result = await generateStyle(styleImageUrl);
     
     if(result.success) {
       setGeneratedTexture(result.texture);
@@ -71,6 +68,10 @@ const ModelControls: FC<ModelControlsProps> = ({ setModel, setModelUrl, setGener
       });
     }
     setIsGenerating(false);
+  };
+  
+  const selectPredefinedStyle = (url: string) => {
+    setStyleImageUrl(url);
   };
 
   return (
@@ -91,7 +92,7 @@ const ModelControls: FC<ModelControlsProps> = ({ setModel, setModelUrl, setGener
               <Button variant="outline" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground" onClick={() => { setModel('sphere'); setModelUrl(null); }}><Circle className="mr-2"/>Sphere</Button>
               <Button variant="outline" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground" onClick={() => { setModel('torus'); setModelUrl(null); }}><ToyBrick className="mr-2"/>Torus</Button>
             </div>
-            <input type="file" id="model-upload" className="hidden" accept=".obj,.glb" onChange={handleModelUpload} />
+            <input type="file" id="model-upload" className="hidden" accept=".obj,.glb,.gltf" onChange={handleModelUpload} />
             <button className="w-full btn-gradient" onClick={() => document.getElementById('model-upload')?.click()}>
                 <span>
                     <Upload className="mr-2 inline-block" />
@@ -113,13 +114,14 @@ const ModelControls: FC<ModelControlsProps> = ({ setModel, setModelUrl, setGener
               <Upload className="mr-2" />
               {styleImageUrl ? 'Change' : 'Upload'} Style Image
             </Button>
+            
+            <CardDescription>Or select a predefined style:</CardDescription>
+            <div className="grid grid-cols-2 gap-2">
+                <Button variant='outline' onClick={() => selectPredefinedStyle('https://placehold.co/300x200.png?text=Synthwave')} data-ai-hint="synthwave sunset">Synthwave</Button>
+                <Button variant='outline' onClick={() => selectPredefinedStyle('https://placehold.co/300x200.png?text=Van+Gogh')} data-ai-hint="starry night">Van Gogh</Button>
+            </div>
 
             {styleImageUrl && <img src={styleImageUrl} alt="Style preview" className="rounded-md object-cover w-full h-32" />}
-            
-            <div className="space-y-2">
-              <Label htmlFor="prompt" className="text-primary">Style Prompt</Label>
-              <Textarea id="prompt" value={prompt} onChange={(e) => setPrompt(e.target.value)} placeholder="e.g., a vibrant graffiti wall" />
-            </div>
 
             <button className="w-full btn-gradient" onClick={handleGenerateStyle} disabled={isGenerating || !styleImageUrl}>
                 <span>
