@@ -5,18 +5,17 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Box, Circle, Upload, Paintbrush, GitCommit, Pyramid } from 'lucide-react';
-import type { ModelType } from '@/app/page';
+import type { ModelInfo } from '@/app/page';
 import { generateStyle } from '@/app/actions';
 import { useToast } from '@/hooks/use-toast';
 import { Progress } from './ui/progress';
 
 interface ModelControlsProps {
-  setModel: (model: ModelType) => void;
-  setModelUrl: Dispatch<SetStateAction<string | null>>;
+  setModelInfo: Dispatch<SetStateAction<ModelInfo>>;
   setGeneratedTexture: Dispatch<SetStateAction<string | null>>;
 }
 
-const ModelControls: FC<ModelControlsProps> = ({ setModel, setModelUrl, setGeneratedTexture }) => {
+const ModelControls: FC<ModelControlsProps> = ({ setModelInfo, setGeneratedTexture }) => {
   const { toast } = useToast();
   const [styleImageUrl, setStyleImageUrl] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
@@ -27,7 +26,17 @@ const ModelControls: FC<ModelControlsProps> = ({ setModel, setModelUrl, setGener
   const handleModelUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       const file = event.target.files[0];
-      setModelUrl(URL.createObjectURL(file));
+      const url = URL.createObjectURL(file);
+      const fileExtension = file.name.split('.').pop()?.toLowerCase();
+      if (fileExtension === 'obj' || fileExtension === 'glb' || fileExtension === 'gltf') {
+        setModelInfo({ type: 'url', url: url, fileType: fileExtension === 'obj' ? 'obj' : 'gltf' });
+      } else {
+        toast({
+          title: 'Error',
+          description: 'Please upload a .obj, .glb, or .gltf file.',
+          variant: 'destructive',
+        });
+      }
     }
   };
   
@@ -96,10 +105,10 @@ const ModelControls: FC<ModelControlsProps> = ({ setModel, setModelUrl, setGener
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid grid-cols-2 gap-2">
-              <Button variant="outline" className="text-lg font-bold border-primary text-[#1B1B1B] hover:bg-primary hover:text-white" onClick={() => setModel('cube')}><Box className="mr-2"/>Cube</Button>
-              <Button variant="outline" className="text-lg font-bold border-primary text-[#1B1B1B] hover:bg-primary hover:text-white" onClick={() => setModel('sphere')}><Circle className="mr-2"/>Sphere</Button>
-              <Button variant="outline" className="text-lg font-bold border-primary text-[#1B1B1B] hover:bg-primary hover:text-white" onClick={() => setModel('knot')}><GitCommit className="mr-2"/>Knot</Button>
-              <Button variant="outline" className="text-lg font-bold border-primary text-[#1B1B1B] hover:bg-primary hover:text-white" onClick={() => setModel('pyramid')}><Pyramid className="mr-2" />Pyramid</Button>
+              <Button variant="outline" className="text-lg font-bold border-primary text-[#1B1B1B] hover:bg-primary hover:text-white" onClick={() => setModelInfo({ type: 'shape', shape: 'cube' })}><Box className="mr-2"/>Cube</Button>
+              <Button variant="outline" className="text-lg font-bold border-primary text-[#1B1B1B] hover:bg-primary hover:text-white" onClick={() => setModelInfo({ type: 'shape', shape: 'sphere' })}><Circle className="mr-2"/>Sphere</Button>
+              <Button variant="outline" className="text-lg font-bold border-primary text-[#1B1B1B] hover:bg-primary hover:text-white" onClick={() => setModelInfo({ type: 'shape', shape: 'knot' })}><GitCommit className="mr-2"/>Knot</Button>
+              <Button variant="outline" className="text-lg font-bold border-primary text-[#1B1B1B] hover:bg-primary hover:text-white" onClick={() => setModelInfo({ type: 'shape', shape: 'pyramid' })}><Pyramid className="mr-2" />Pyramid</Button>
             </div>
             <input type="file" id="model-upload" className="hidden" accept=".obj,.glb,.gltf" onChange={handleModelUpload} />
             <button className="w-full btn-gradient" onClick={() => document.getElementById('model-upload')?.click()}>

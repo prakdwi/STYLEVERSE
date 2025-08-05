@@ -4,17 +4,16 @@ import React, { useRef, useEffect } from 'react';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import type { ModelType, MaterialType } from '@/app/page';
+import type { ModelInfo, MaterialType } from '@/app/page';
 
 interface ThreeSceneProps {
-  model: ModelType;
-  modelUrl: string | null;
+  modelInfo: ModelInfo;
   material: MaterialType;
   lightIntensity: number;
   generatedTexture: string | null;
 }
 
-const ThreeScene: FC<ThreeSceneProps> = ({ model, modelUrl, material, lightIntensity, generatedTexture }) => {
+const ThreeScene: FC<ThreeSceneProps> = ({ modelInfo, material, lightIntensity, generatedTexture }) => {
   const mountRef = useRef<HTMLDivElement>(null);
   const sceneRef = useRef<THREE.Scene | null>(null);
   const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
@@ -169,7 +168,7 @@ const ThreeScene: FC<ThreeSceneProps> = ({ model, modelUrl, material, lightInten
   }, [material, generatedTexture]);
 
 
-  const loadModel = async (url: string) => {
+  const loadModel = async (url: string, fileType: 'gltf' | 'obj') => {
     const scene = sceneRef.current;
     if (!scene) return;
   
@@ -227,10 +226,8 @@ const ThreeScene: FC<ThreeSceneProps> = ({ model, modelUrl, material, lightInten
         }
         applyMaterial(meshRef.current, newMaterial);
     };
-
-    const fileExtension = url.split('.').pop()?.toLowerCase();
     
-    if (fileExtension === 'obj') {
+    if (fileType === 'obj') {
         const OBJLoaderModule = await import('three-obj-loader');
         const OBJLoader = OBJLoaderModule.default(THREE);
         const loader = new (OBJLoader as any)();
@@ -246,8 +243,8 @@ const ThreeScene: FC<ThreeSceneProps> = ({ model, modelUrl, material, lightInten
   };
 
   useEffect(() => {
-    if (modelUrl) {
-      loadModel(modelUrl);
+    if (modelInfo.type === 'url') {
+      loadModel(modelInfo.url, modelInfo.fileType);
     } else {
       const scene = sceneRef.current;
       if (scene && meshRef.current) {
@@ -255,7 +252,7 @@ const ThreeScene: FC<ThreeSceneProps> = ({ model, modelUrl, material, lightInten
       }
   
       let newGeometry: THREE.BufferGeometry;
-      switch (model) {
+      switch (modelInfo.shape) {
         case 'sphere':
           newGeometry = new THREE.SphereGeometry(1.5, 32, 16);
           break;
@@ -277,7 +274,7 @@ const ThreeScene: FC<ThreeSceneProps> = ({ model, modelUrl, material, lightInten
       }
       meshRef.current = newMesh;
     }
-  }, [model, modelUrl]);
+  }, [modelInfo]);
 
 
   return <div ref={mountRef} className="w-full h-full" />;

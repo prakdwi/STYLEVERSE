@@ -8,10 +8,18 @@ import ThreeScene from '@/components/ThreeScene';
 
 export type MaterialType = 'matte' | 'metallic' | 'wireframe' | 'cotton' | 'silk' | 'denim';
 export type ModelType = 'cube' | 'sphere' | 'knot' | 'pyramid';
+export type ModelInfo = {
+  type: 'url',
+  url: string;
+  fileType: 'gltf' | 'obj';
+} | {
+  type: 'shape',
+  shape: ModelType
+}
+
 
 const Home: FC = () => {
-  const [model, setModel] = React.useState<ModelType>('cube');
-  const [modelUrl, setModelUrl] = React.useState<string | null>(null);
+  const [modelInfo, setModelInfo] = React.useState<ModelInfo>({type: 'shape', shape: 'cube'});
   const [material, setMaterial] = React.useState<MaterialType>('matte');
   const [lightIntensity, setLightIntensity] = React.useState(1.5);
   const [generatedTexture, setGeneratedTexture] = React.useState<string | null>(null);
@@ -26,11 +34,6 @@ const Home: FC = () => {
     window.dispatchEvent(event);
   };
 
-  const handleSetModel = (newModel: ModelType) => {
-    setModel(newModel);
-    setModelUrl(null);
-  };
-
   return (
     <div className="flex items-center justify-center min-h-screen font-body">
       <div className="w-[1200px] h-[800px] bg-[#C6C0AC] rounded-2xl p-8 shadow-2xl border-4 border-[#B4AE9C]">
@@ -42,10 +45,10 @@ const Home: FC = () => {
             </div>
             <div className="flex flex-1 border-t border-white/10 overflow-hidden">
               <aside className="relative w-80 h-full overflow-y-auto p-4 border-r border-white/10 bg-[#141424] flex flex-col gap-4 tv-screen">
-                <ModelControls setModel={handleSetModel} setModelUrl={setModelUrl} setGeneratedTexture={setGeneratedTexture} />
+                <ModelControls setModelInfo={setModelInfo} setGeneratedTexture={setGeneratedTexture} />
               </aside>
               <main className="flex-1 relative">
-                <ThreeScene model={model} modelUrl={modelUrl} material={material} lightIntensity={lightIntensity} generatedTexture={generatedTexture} />
+                <ThreeScene modelInfo={modelInfo} material={material} lightIntensity={lightIntensity} generatedTexture={generatedTexture} />
               </main>
               <aside className="relative w-72 h-full overflow-y-auto p-4 border-l border-white/10 bg-[#141424] tv-screen">
                 <CustomizationControls
