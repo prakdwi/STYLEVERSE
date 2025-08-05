@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Box, Circle, Upload, Paintbrush, GitCommit, Pyramid } from 'lucide-react';
+import { Box, Circle, Upload, Paintbrush, GitCommit, Pyramid, Bot } from 'lucide-react';
 import type { ModelInfo } from '@/app/page';
 import { generateStyle } from '@/app/actions';
 import { useToast } from '@/hooks/use-toast';
@@ -104,6 +104,7 @@ const ModelControls: FC<ModelControlsProps> = ({ setModelInfo, setGeneratedTextu
         <Card className="bg-transparent border-0 shadow-none">
           <CardHeader>
             <CardTitle className="text-primary text-2xl">Select a Model</CardTitle>
+
             <CardDescription className="text-white/70">Choose a base model or upload your own.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -112,6 +113,7 @@ const ModelControls: FC<ModelControlsProps> = ({ setModelInfo, setGeneratedTextu
               <Button variant="outline" className="text-lg font-bold border-primary hover:bg-primary hover:text-white text-[#1B1B1B]" onClick={() => setModelInfo({ type: 'shape', shape: 'sphere' })}><Circle className="mr-2"/>Sphere</Button>
               <Button variant="outline" className="text-lg font-bold border-primary hover:bg-primary hover:text-white text-[#1B1B1B]" onClick={() => setModelInfo({ type: 'shape', shape: 'knot' })}><GitCommit className="mr-2"/>Knot</Button>
               <Button variant="outline" className="text-lg font-bold border-primary hover:bg-primary hover:text-white text-[#1B1B1B]" onClick={() => setModelInfo({ type: 'shape', shape: 'pyramid' })}><Pyramid className="mr-2"/>Pyramid</Button>
+              <Button variant="outline" className="text-lg font-bold border-primary hover:bg-primary hover:text-white text-[#1B1B1B] col-span-2" onClick={() => setModelInfo({ type: 'url', url: 'https://threejs.org/examples/models/gltf/DamagedHelmet/glTF/DamagedHelmet.gltf', fileType: 'glb' })}><Bot className="mr-2"/>Helmet</Button>
             </div>
             <input type="file" id="model-upload" className="hidden" accept=".glb,.gltf,.obj" onChange={handleModelUpload} />
             <Button variant="outline" className="w-full h-12 text-lg font-bold" onClick={() => document.getElementById('model-upload')?.click()}>
