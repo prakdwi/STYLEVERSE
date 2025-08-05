@@ -18,7 +18,7 @@ export type ModelInfo = {
 
 
 const Home: FC = () => {
-  const [modelInfo, setModelInfo] = React.useState<ModelInfo>({type: 'url', url: 'https://firebasestorage.googleapis.com/v0/b/genkit-llm-7669a.appspot.com/o/jacket_2.glb?alt=media&token=f94a4855-4674-4b52-a59a-25c786a63507'});
+  const [modelInfo, setModelInfo] = React.useState<ModelInfo>({type: 'url', url: 'https://storage.googleapis.com/maker-suite-3d-models/third_party/nasa/Flight_Anatomy_of_a_Spacesuit.glb'});
   const [material, setMaterial] = React.useState<MaterialType>('matte');
   const [lightIntensity, setLightIntensity] = React.useState(1.5);
   const [generatedTexture, setGeneratedTexture] = React.useState<string | null>(null);
