@@ -7,7 +7,7 @@ import CustomizationControls from '@/components/CustomizationControls';
 import ThreeScene from '@/components/ThreeScene';
 
 export type MaterialType = 'matte' | 'metallic' | 'wireframe' | 'cotton' | 'silk' | 'denim';
-export type ModelType = 'cube' | 'sphere' | 'torus';
+export type ModelType = 'cube' | 'sphere' | 'torus' | 'cone' | 'knot';
 
 const Home: FC = () => {
   const [model, setModel] = React.useState<ModelType>('cube');

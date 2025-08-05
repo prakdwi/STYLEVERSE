@@ -153,10 +153,10 @@ const ThreeScene: FC<ThreeSceneProps> = ({ model, modelUrl, material, lightInten
                 newMaterial = new THREE.MeshStandardMaterial({ ...materialProps, metalness: 0.0, roughness: 0.8 });
                 break;
             case 'silk':
-                newMaterial = new THREE.MeshStandardMaterial({ ...materialProps, metalness: 0.0, roughness: 0.2, clearcoat: 0.5 });
+                newMaterial = new THREE.MeshStandardMaterial({ ...materialProps, metalness: 0.1, roughness: 0.1, clearcoat: 0.9 });
                 break;
             case 'denim':
-                newMaterial = new THREE.MeshStandardMaterial({ ...materialProps, metalness: 0.1, roughness: 0.7 });
+                newMaterial = new THREE.MeshStandardMaterial({ ...materialProps, metalness: 0.2, roughness: 0.7 });
                 break;
             case 'matte':
             default:
@@ -214,10 +214,10 @@ const ThreeScene: FC<ThreeSceneProps> = ({ model, modelUrl, material, lightInten
                 newMaterial = new THREE.MeshStandardMaterial({ ...materialProps, metalness: 0.0, roughness: 0.8 });
                 break;
             case 'silk':
-                newMaterial = new THREE.MeshStandardMaterial({ ...materialProps, metalness: 0.0, roughness: 0.2, clearcoat: 0.5 });
+                newMaterial = new THREE.MeshStandardMaterial({ ...materialProps, metalness: 0.1, roughness: 0.1, clearcoat: 0.9 });
                 break;
             case 'denim':
-                newMaterial = new THREE.MeshStandardMaterial({ ...materialProps, metalness: 0.1, roughness: 0.7 });
+                newMaterial = new THREE.MeshStandardMaterial({ ...materialProps, metalness: 0.2, roughness: 0.7 });
                 break;
             case 'matte':
             default:
@@ -253,6 +253,12 @@ const ThreeScene: FC<ThreeSceneProps> = ({ model, modelUrl, material, lightInten
             break;
           case 'torus':
             newGeometry = new THREE.TorusGeometry(1.5, 0.6, 16, 100);
+            break;
+          case 'cone':
+            newGeometry = new THREE.ConeGeometry( 1.5, 3, 32 );
+            break;
+          case 'knot':
+            newGeometry = new THREE.TorusKnotGeometry( 1, 0.4, 100, 16 );
             break;
           case 'cube':
           default:

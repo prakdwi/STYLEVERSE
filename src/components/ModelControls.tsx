@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Box, Circle, Upload, ToyBrick, Wand2 } from 'lucide-react';
+import { Box, Circle, Cone, Upload, ToyBrick, Wand2, GitCommit } from 'lucide-react';
 import type { ModelType } from '@/app/page';
 import { generateStyle } from '@/app/actions';
 import { useToast } from '@/hooks/use-toast';
@@ -95,6 +95,8 @@ const ModelControls: FC<ModelControlsProps> = ({ setModel, setModelUrl, setGener
               <Button variant="outline" className="text-lg border-primary text-primary hover:bg-primary hover:text-white" onClick={() => { setModel('cube'); setModelUrl(null); }}><Box className="mr-2"/>Cube</Button>
               <Button variant="outline" className="text-lg border-primary text-primary hover:bg-primary hover:text-white" onClick={() => { setModel('sphere'); setModelUrl(null); }}><Circle className="mr-2"/>Sphere</Button>
               <Button variant="outline" className="text-lg border-primary text-primary hover:bg-primary hover:text-white" onClick={() => { setModel('torus'); setModelUrl(null); }}><ToyBrick className="mr-2"/>Torus</Button>
+              <Button variant="outline" className="text-lg border-primary text-primary hover:bg-primary hover:text-white" onClick={() => { setModel('cone'); setModelUrl(null); }}><Cone className="mr-2"/>Cone</Button>
+              <Button variant="outline" className="text-lg border-primary text-primary hover:bg-primary hover:text-white" onClick={() => { setModel('knot'); setModelUrl(null); }}><GitCommit className="mr-2"/>Knot</Button>
             </div>
             <input type="file" id="model-upload" className="hidden" accept=".obj,.glb,.gltf" onChange={handleModelUpload} />
             <button className="w-full btn-gradient" onClick={() => document.getElementById('model-upload')?.click()}>
