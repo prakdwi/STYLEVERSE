@@ -227,17 +227,10 @@ const ThreeScene: FC<ThreeSceneProps> = ({ model, modelUrl, material, lightInten
         applyMaterial(meshRef.current, newMaterial);
     };
 
-    if (url.endsWith('.glb') || url.endsWith('.gltf')) {
-        const loader = new GLTFLoader();
-        loader.load(url, (gltf) => onModelLoaded(gltf.scene), undefined, (error) => {
-          console.error('An error happened while loading the GLB model:', error);
-        });
-    } else {
-        const loader = new OBJLoader();
-        loader.load(url, onModelLoaded, undefined, (error) => {
-          console.error('An error happened while loading the OBJ model:', error);
-        });
-    }
+    const loader = new GLTFLoader();
+    loader.load(url, (gltf) => onModelLoaded(gltf.scene), undefined, (error) => {
+      console.error('An error happened while loading the GLB model:', error);
+    });
   };
 
   useEffect(() => {

@@ -7,7 +7,7 @@ import CustomizationControls from '@/components/CustomizationControls';
 import ThreeScene from '@/components/ThreeScene';
 
 export type MaterialType = 'matte' | 'metallic' | 'wireframe' | 'cotton' | 'silk' | 'denim';
-export type ModelType = 'cube' | 'sphere' | 'torus' | 'cone' | 'knot';
+export type ModelType = 'cube' | 'sphere' | 'torus' | 'cone' | 'knot' | 'shirt' | 'skirt' | 'jacket';
 
 const Home: FC = () => {
   const [model, setModel] = React.useState<ModelType>('cube');
@@ -26,6 +26,15 @@ const Home: FC = () => {
     window.dispatchEvent(event);
   };
 
+  const handleSetModel = (newModel: ModelType) => {
+    setModel(newModel);
+    if (['shirt', 'skirt', 'jacket'].includes(newModel)) {
+      setModelUrl(`https://firebasestorage.googleapis.com/v0/b/genkit-llm-tools.appspot.com/o/styleverse%2F${newModel}.glb?alt=media`);
+    } else {
+      setModelUrl(null);
+    }
+  };
+
   return (
     <div className="flex items-center justify-center min-h-screen font-body">
       <div className="w-[1200px] h-[800px] bg-[#C6C0AC] rounded-2xl p-8 shadow-2xl border-4 border-[#B4AE9C]">
@@ -37,7 +46,7 @@ const Home: FC = () => {
             </div>
             <div className="flex flex-1 border-t border-white/10 overflow-hidden">
               <aside className="relative w-80 h-full overflow-y-auto p-4 border-r border-white/10 bg-[#141424] flex flex-col gap-4 tv-screen">
-                <ModelControls setModel={setModel} setModelUrl={setModelUrl} setGeneratedTexture={setGeneratedTexture} />
+                <ModelControls setModel={handleSetModel} setModelUrl={setModelUrl} setGeneratedTexture={setGeneratedTexture} />
               </aside>
               <main className="flex-1 relative">
                 <ThreeScene model={model} modelUrl={modelUrl} material={material} lightIntensity={lightIntensity} generatedTexture={generatedTexture} />

@@ -10,8 +10,21 @@ import { generateStyle } from '@/app/actions';
 import { useToast } from '@/hooks/use-toast';
 import { Progress } from './ui/progress';
 
+// Helper for shirt/skirt/jacket icons
+const ClothingIcon = ({ type }: { type: 'shirt' | 'skirt' | 'jacket' }) => {
+    const SvgIcon = () => {
+      switch (type) {
+        case 'shirt': return <path d="M12 2l-7 4v6h14V6l-7-4zM5 12v6h14v-6H5z"/>;
+        case 'skirt': return <path d="M5 4l7 3 7-3v4H5V4zm0 6l7 3 7-3v8H5v-8z"/>;
+        case 'jacket': return <path d="M12 2L4 6v8h16V6l-8-4zM4 14v6h5v-3h6v3h5v-6H4z"/>;
+      }
+    };
+    return <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2"><SvgIcon /></svg>
+};
+
+
 interface ModelControlsProps {
-  setModel: Dispatch<SetStateAction<ModelType>>;
+  setModel: (model: ModelType) => void;
   setModelUrl: Dispatch<SetStateAction<string | null>>;
   setGeneratedTexture: Dispatch<SetStateAction<string | null>>;
 }
@@ -21,6 +34,8 @@ const ModelControls: FC<ModelControlsProps> = ({ setModel, setModelUrl, setGener
   const [styleImageUrl, setStyleImageUrl] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
   const [uploadedImagePreview, setUploadedImagePreview] = useState<string | null>(null);
+  const [activeStyle, setActiveStyle] = useState<string | null>(null);
+
 
   const handleModelUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
@@ -37,6 +52,7 @@ const ModelControls: FC<ModelControlsProps> = ({ setModel, setModelUrl, setGener
         const result = e.target?.result as string;
         setStyleImageUrl(result);
         setUploadedImagePreview(result);
+        setActiveStyle(result);
       };
       reader.readAsDataURL(file);
     }
@@ -76,6 +92,7 @@ const ModelControls: FC<ModelControlsProps> = ({ setModel, setModelUrl, setGener
   const selectPredefinedStyle = (url: string) => {
     setStyleImageUrl(url);
     setUploadedImagePreview(null);
+    setActiveStyle(url);
   };
 
   return (
@@ -92,11 +109,14 @@ const ModelControls: FC<ModelControlsProps> = ({ setModel, setModelUrl, setGener
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid grid-cols-2 gap-2">
-              <Button variant="outline" className="text-lg border-primary text-primary hover:bg-primary hover:text-white" onClick={() => { setModel('cube'); setModelUrl(null); }}><Box className="mr-2"/>Cube</Button>
-              <Button variant="outline" className="text-lg border-primary text-primary hover:bg-primary hover:text-white" onClick={() => { setModel('sphere'); setModelUrl(null); }}><Circle className="mr-2"/>Sphere</Button>
-              <Button variant="outline" className="text-lg border-primary text-primary hover:bg-primary hover:text-white" onClick={() => { setModel('torus'); setModelUrl(null); }}><ToyBrick className="mr-2"/>Torus</Button>
-              <Button variant="outline" className="text-lg border-primary text-primary hover:bg-primary hover:text-white" onClick={() => { setModel('cone'); setModelUrl(null); }}><Cone className="mr-2"/>Cone</Button>
-              <Button variant="outline" className="text-lg border-primary text-primary hover:bg-primary hover:text-white" onClick={() => { setModel('knot'); setModelUrl(null); }}><GitCommit className="mr-2"/>Knot</Button>
+              <Button variant="outline" className="text-lg border-primary text-primary hover:bg-primary hover:text-white" onClick={() => setModel('cube')}><Box className="mr-2"/>Cube</Button>
+              <Button variant="outline" className="text-lg border-primary text-primary hover:bg-primary hover:text-white" onClick={() => setModel('sphere')}><Circle className="mr-2"/>Sphere</Button>
+              <Button variant="outline" className="text-lg border-primary text-primary hover:bg-primary hover:text-white" onClick={() => setModel('torus')}><ToyBrick className="mr-2"/>Torus</Button>
+              <Button variant="outline" className="text-lg border-primary text-primary hover:bg-primary hover:text-white" onClick={() => setModel('cone')}><Cone className="mr-2"/>Cone</Button>
+              <Button variant="outline" className="text-lg border-primary text-primary hover:bg-primary hover:text-white" onClick={() => setModel('knot')}><GitCommit className="mr-2"/>Knot</Button>
+              <Button variant="outline" className="text-lg border-primary text-primary hover:bg-primary hover:text-white" onClick={() => setModel('shirt')}><ClothingIcon type="shirt" />Shirt</Button>
+              <Button variant="outline" className="text-lg border-primary text-primary hover:bg-primary hover:text-white" onClick={() => setModel('skirt')}><ClothingIcon type="skirt" />Skirt</Button>
+              <Button variant="outline" className="text-lg border-primary text-primary hover:bg-primary hover:text-white" onClick={() => setModel('jacket')}><ClothingIcon type="jacket" />Jacket</Button>
             </div>
             <input type="file" id="model-upload" className="hidden" accept=".obj,.glb,.gltf" onChange={handleModelUpload} />
             <button className="w-full btn-gradient" onClick={() => document.getElementById('model-upload')?.click()}>
@@ -123,8 +143,8 @@ const ModelControls: FC<ModelControlsProps> = ({ setModel, setModelUrl, setGener
             
             <CardDescription className="text-white/70">Or select a predefined style:</CardDescription>
             <div className="grid grid-cols-2 gap-2">
-                <Button className="text-lg" variant={styleImageUrl === 'https://placehold.co/300x200.png?text=Madhubani' ? 'default' : 'outline'} onClick={() => selectPredefinedStyle('https://placehold.co/300x200.png?text=Madhubani')} data-ai-hint="madhubani painting">Madhubani</Button>
-                <Button className="text-lg" variant={styleImageUrl === 'https://placehold.co/300x200.png?text=Van+Gogh' ? 'default' : 'outline'} onClick={() => selectPredefinedStyle('https://placehold.co/300x200.png?text=Van+Gogh')} data-ai-hint="starry night">Van Gogh</Button>
+                <Button className="text-lg" variant={activeStyle === 'https://placehold.co/300x200.png?text=Madhubani' ? 'default' : 'outline'} onClick={() => selectPredefinedStyle('https://placehold.co/300x200.png?text=Madhubani')} data-ai-hint="madhubani painting">Madhubani</Button>
+                <Button className="text-lg" variant={activeStyle === 'https://placehold.co/300x200.png?text=Van+Gogh' ? 'default' : 'outline'} onClick={() => selectPredefinedStyle('https://placehold.co/300x200.png?text=Van+Gogh')} data-ai-hint="starry night">Van Gogh</Button>
             </div>
 
             {uploadedImagePreview && <img src={uploadedImagePreview} alt="Style preview" className="rounded-md object-cover w-full h-32" />}
