@@ -11,8 +11,8 @@ import { GenerateStyleInputSchema, GenerateStyleOutputSchema, type GenerateStyle
 async function generateStyle(input: GenerateStyleInput) {
     let promptText = 'Generate a seamless texture in the style of the attached image.';
 
-    if (input.styleImageDataUri.includes('Synthwave')) {
-      promptText = 'Generate a seamless texture in a synthwave style, with neon grids and a sunset.'
+    if (input.styleImageDataUri.includes('Madhubani')) {
+      promptText = 'Generate a seamless texture in a Madhubani painting style, with intricate geometric patterns and vibrant colors.'
     } else if (input.styleImageDataUri.includes('Van+Gogh')) {
       promptText = 'Generate a seamless texture in the style of Van Gogh\'s Starry Night.'
     }
