@@ -18,7 +18,7 @@ interface ModelControlsProps {
   setGeneratedTexture: Dispatch<SetStateAction<string | null>>;
 }
 
-const glassmorphismClass = "bg-white/5 border border-white/10 backdrop-blur-md";
+const glassmorphismClass = "bg-white/5 border border-white/10 backdrop-blur-md shadow-lg";
 
 const ModelControls: FC<ModelControlsProps> = ({ setModel, setModelUrl, setGeneratedTexture }) => {
   const { toast } = useToast();
@@ -94,7 +94,7 @@ const ModelControls: FC<ModelControlsProps> = ({ setModel, setModelUrl, setGener
               <Button variant="outline" onClick={() => { setModel('torus'); setModelUrl(null); }}><ToyBrick className="mr-2"/>Torus</Button>
             </div>
             <input type="file" id="model-upload" className="hidden" accept=".obj,.glb" onChange={handleModelUpload} />
-            <Button className="w-full" onClick={() => document.getElementById('model-upload')?.click()}>
+            <Button className="w-full bg-gradient-to-r from-primary to-accent text-white border-0 hover:from-accent hover:to-primary" onClick={() => document.getElementById('model-upload')?.click()}>
               <Upload className="mr-2" />
               Upload .obj/.glb
             </Button>
@@ -109,7 +109,7 @@ const ModelControls: FC<ModelControlsProps> = ({ setModel, setModelUrl, setGener
           </CardHeader>
           <CardContent className="space-y-4">
             <input type="file" id="image-upload" className="hidden" accept="image/*" onChange={handleImageUpload} />
-            <Button className="w-full" onClick={() => document.getElementById('image-upload')?.click()}>
+            <Button variant="outline" className="w-full" onClick={() => document.getElementById('image-upload')?.click()}>
               <Upload className="mr-2" />
               {styleImageUrl ? 'Change' : 'Upload'} Style Image
             </Button>
@@ -121,7 +121,7 @@ const ModelControls: FC<ModelControlsProps> = ({ setModel, setModelUrl, setGener
               <Textarea id="prompt" value={prompt} onChange={(e) => setPrompt(e.target.value)} placeholder="e.g., a vibrant graffiti wall" />
             </div>
 
-            <Button className="w-full" onClick={handleGenerateStyle} disabled={isGenerating || !styleImageUrl}>
+            <Button className="w-full bg-gradient-to-r from-primary to-accent text-white border-0 hover:from-accent hover:to-primary" onClick={handleGenerateStyle} disabled={isGenerating || !styleImageUrl}>
               <Wand2 className="mr-2"/>
               {isGenerating ? 'Generating...' : 'Generate Style'}
             </Button>

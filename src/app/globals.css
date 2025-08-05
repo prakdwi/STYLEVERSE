@@ -13,8 +13,8 @@
     --popover: 240 10% 3.9%;
     --popover-foreground: 0 0% 98%;
 
-    --primary: 263 88% 66%;
-    --primary-foreground: 264 43% 98%;
+    --primary: 262 84% 60%;
+    --primary-foreground: 263 93% 98%;
 
     --secondary: 240 3.7% 15.9%;
     --secondary-foreground: 0 0% 98%;
@@ -30,31 +30,31 @@
 
     --border: 240 3.7% 15.9%;
     --input: 240 3.7% 15.9%;
-    --ring: 263 88% 66%;
+    --ring: 262 84% 60%;
 
     --radius: 0.5rem;
   }
  
   .dark {
-    --background: 0 0% 7%;
+    --background: 220 13% 7%; /* Charcoal Black */
     --foreground: 0 0% 98%;
-    --card: 0 0% 10%;
+    --card: 220 13% 10%;
     --card-foreground: 0 0% 98%;
-    --popover: 0 0% 7%;
+    --popover: 220 13% 7%;
     --popover-foreground: 0 0% 98%;
-    --primary: 262 74% 64%;
+    --primary: 262 84% 60%; /* Electric Violet */
     --primary-foreground: 0 0% 98%;
-    --secondary: 0 0% 14.9%;
+    --secondary: 220 13% 14.9%;
     --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 14.9%;
+    --muted: 220 13% 14.9%;
     --muted-foreground: 0 0% 63.9%;
-    --accent: 172 100% 48%;
-    --accent-foreground: 0 0% 7%;
+    --accent: 172 100% 48%; /* Mint Teal */
+    --accent-foreground: 220 13% 7%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 14.9%;
-    --input: 0 0% 14.9%;
-    --ring: 262 74% 64%;
+    --border: 220 13% 14.9%;
+    --input: 220 13% 14.9%;
+    --ring: 262 84% 60%;
   }
 }
 
@@ -64,5 +64,14 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer components {
+  .btn-gradient {
+    @apply relative inline-flex items-center justify-center p-0.5 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-500 to-pink-500 group-hover:from-purple-500 group-hover:to-pink-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800;
+  }
+  .btn-gradient > span {
+    @apply relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0;
   }
 }
