@@ -109,10 +109,10 @@ const ModelControls: FC<ModelControlsProps> = ({ setModel, setModelUrl, setGener
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid grid-cols-2 gap-2">
-              <Button variant="outline" className="text-lg border-primary text-primary hover:bg-primary hover:text-white" onClick={() => setModel('cube')}><Box className="mr-2"/>Cube</Button>
-              <Button variant="outline" className="text-lg border-primary text-primary hover:bg-primary hover:text-white" onClick={() => setModel('sphere')}><Circle className="mr-2"/>Sphere</Button>
-              <Button variant="outline" className="text-lg border-primary text-primary hover:bg-primary hover:text-white" onClick={() => setModel('knot')}><GitCommit className="mr-2"/>Knot</Button>
-              <Button variant="outline" className="text-lg border-primary text-primary hover:bg-primary hover:text-white" onClick={() => setModel('jacket')}><ClothingIcon type="jacket" />Jacket</Button>
+              <Button variant="outline" className="text-lg font-bold border-primary text-primary hover:bg-primary hover:text-white" onClick={() => setModel('cube')}><Box className="mr-2"/>Cube</Button>
+              <Button variant="outline" className="text-lg font-bold border-primary text-primary hover:bg-primary hover:text-white" onClick={() => setModel('sphere')}><Circle className="mr-2"/>Sphere</Button>
+              <Button variant="outline" className="text-lg font-bold border-primary text-primary hover:bg-primary hover:text-white" onClick={() => setModel('knot')}><GitCommit className="mr-2"/>Knot</Button>
+              <Button variant="outline" className="text-lg font-bold border-primary text-primary hover:bg-primary hover:text-white" onClick={() => setModel('jacket')}><ClothingIcon type="jacket" />Jacket</Button>
             </div>
             <input type="file" id="model-upload" className="hidden" accept=".obj,.glb,.gltf" onChange={handleModelUpload} />
             <button className="w-full btn-gradient" onClick={() => document.getElementById('model-upload')?.click()}>

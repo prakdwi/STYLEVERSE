@@ -69,13 +69,6 @@ const Home: FC = () => {
           <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 flex items-center gap-4">
             <div className="w-24 h-4 bg-gray-600 rounded-full opacity-20"></div>
           </div>
-          <div className="absolute right-8 bottom-20 flex flex-col gap-4">
-              <div className="w-12 h-12 bg-[#B4AE9C] rounded-full border-2 border-[#A29C8A] shadow-inner"></div>
-              <div className="w-12 h-12 bg-[#B4AE9C] rounded-full border-2 border-[#A29C8A] shadow-inner"></div>
-          </div>
-          <div className="absolute right-8 top-20 w-8 h-24 bg-repeat-y bg-[length:100%_1rem]" style={{backgroundImage: 'linear-gradient(to bottom, transparent, transparent 4px, #A29C8A 4px, #A29C8A 6px)'}}>
-          </div>
-
         </div>
       </div>
     </div>
