@@ -4,57 +4,57 @@
 
 @layer base {
   :root {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
+    --background: 226 94% 6%; /* #03071E */
+    --foreground: 226 80% 95%;
 
-    --card: 240 10% 3.9%;
+    --card: 348 83% 12%; /* #370617 */
     --card-foreground: 0 0% 98%;
 
-    --popover: 240 10% 3.9%;
+    --popover: 226 94% 6%;
     --popover-foreground: 0 0% 98%;
 
-    --primary: 262 84% 60%;
-    --primary-foreground: 263 93% 98%;
+    --primary: 0 100% 41%; /* #D00000 */
+    --primary-foreground: 0 0% 98%;
 
-    --secondary: 240 3.7% 15.9%;
+    --secondary: 226 94% 10%;
     --secondary-foreground: 0 0% 98%;
 
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
+    --muted: 226 94% 10%;
+    --muted-foreground: 226 10% 65%;
 
-    --accent: 172 100% 48%;
-    --accent-foreground: 173 94% 9%;
+    --accent: 38 96% 51%; /* #FAA307 */
+    --accent-foreground: 348 83% 12%;
 
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 262 84% 60%;
+    --border: 226 94% 10%;
+    --input: 226 94% 10%;
+    --ring: 0 100% 41%;
 
     --radius: 0.5rem;
   }
  
   .dark {
-    --background: 220 13% 7%; /* Charcoal Black */
+    --background: 226 94% 6%; /* #03071E */
     --foreground: 0 0% 98%;
-    --card: 220 13% 10%;
+    --card: 348 83% 12%; /* #370617 */
     --card-foreground: 0 0% 98%;
-    --popover: 220 13% 7%;
+    --popover: 226 94% 6%;
     --popover-foreground: 0 0% 98%;
-    --primary: 262 84% 60%; /* Electric Violet */
+    --primary: 0 100% 41%; /* #D00000 */
     --primary-foreground: 0 0% 98%;
-    --secondary: 220 13% 14.9%;
+    --secondary: 226 94% 10%;
     --secondary-foreground: 0 0% 98%;
-    --muted: 220 13% 14.9%;
-    --muted-foreground: 0 0% 63.9%;
-    --accent: 172 100% 48%; /* Mint Teal */
-    --accent-foreground: 220 13% 7%;
+    --muted: 226 94% 10%;
+    --muted-foreground: 226 10% 65%;
+    --accent: 38 96% 51%; /* #FAA307 */
+    --accent-foreground: 348 83% 12%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
-    --border: 220 13% 14.9%;
-    --input: 220 13% 14.9%;
-    --ring: 262 84% 60%;
+    --border: 226 94% 10%;
+    --input: 226 94% 10%;
+    --ring: 0 100% 41%;
   }
 }
 
@@ -69,7 +69,7 @@
 
 @layer components {
   .btn-gradient {
-    @apply relative inline-flex items-center justify-center p-0.5 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-500 to-pink-500 group-hover:from-purple-500 group-hover:to-pink-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800;
+    @apply relative inline-flex items-center justify-center p-0.5 overflow-hidden text-sm font-medium text-gray-900 rounded-lg bg-gradient-to-br from-[#F48C06] to-[#FFBA08] group-hover:from-[#F48C06] group-hover:to-[#FFBA08] hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-orange-200 dark:focus:ring-orange-800;
   }
   .btn-gradient > span {
     @apply relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0;

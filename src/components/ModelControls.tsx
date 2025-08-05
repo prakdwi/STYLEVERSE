@@ -18,8 +18,6 @@ interface ModelControlsProps {
   setGeneratedTexture: Dispatch<SetStateAction<string | null>>;
 }
 
-const glassmorphismClass = "bg-white/5 border border-white/10 backdrop-blur-md shadow-lg";
-
 const ModelControls: FC<ModelControlsProps> = ({ setModel, setModelUrl, setGeneratedTexture }) => {
   const { toast } = useToast();
   const [styleImageUrl, setStyleImageUrl] = useState<string | null>(null);
@@ -82,29 +80,31 @@ const ModelControls: FC<ModelControlsProps> = ({ setModel, setModelUrl, setGener
         <TabsTrigger value="styles">Styles</TabsTrigger>
       </TabsList>
       <TabsContent value="models" className="flex-grow mt-4">
-        <Card className={glassmorphismClass}>
+        <Card className="bg-transparent border-0 shadow-none">
           <CardHeader>
-            <CardTitle>Select a Model</CardTitle>
+            <CardTitle className="text-[#FFBA08]">Select a Model</CardTitle>
             <CardDescription>Choose a base model or upload your own.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid grid-cols-2 gap-2">
-              <Button variant="outline" onClick={() => { setModel('cube'); setModelUrl(null); }}><Box className="mr-2"/>Cube</Button>
-              <Button variant="outline" onClick={() => { setModel('sphere'); setModelUrl(null); }}><Circle className="mr-2"/>Sphere</Button>
-              <Button variant="outline" onClick={() => { setModel('torus'); setModelUrl(null); }}><ToyBrick className="mr-2"/>Torus</Button>
+              <Button variant="default" className="bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-[0_0_10px_2px_#FFBA08] focus:shadow-[0_0_10px_2px_#FFBA08]" onClick={() => { setModel('cube'); setModelUrl(null); }}><Box className="mr-2"/>Cube</Button>
+              <Button variant="default" className="bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-[0_0_10px_2px_#FFBA08] focus:shadow-[0_0_10px_2px_#FFBA08]" onClick={() => { setModel('sphere'); setModelUrl(null); }}><Circle className="mr-2"/>Sphere</Button>
+              <Button variant="default" className="bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-[0_0_10px_2px_#FFBA08] focus:shadow-[0_0_10px_2px_#FFBA08]" onClick={() => { setModel('torus'); setModelUrl(null); }}><ToyBrick className="mr-2"/>Torus</Button>
             </div>
             <input type="file" id="model-upload" className="hidden" accept=".obj,.glb" onChange={handleModelUpload} />
-            <Button className="w-full bg-gradient-to-r from-primary to-accent text-white border-0 hover:from-accent hover:to-primary" onClick={() => document.getElementById('model-upload')?.click()}>
-              <Upload className="mr-2" />
-              Upload .obj/.glb
-            </Button>
+            <button className="w-full btn-gradient" onClick={() => document.getElementById('model-upload')?.click()}>
+                <span>
+                    <Upload className="mr-2 inline-block" />
+                    Upload .obj/.glb
+                </span>
+            </button>
           </CardContent>
         </Card>
       </TabsContent>
       <TabsContent value="styles" className="flex-grow mt-4">
-        <Card className={glassmorphismClass}>
+        <Card className="bg-transparent border-0 shadow-none">
           <CardHeader>
-            <CardTitle>AI Style Transfer</CardTitle>
+            <CardTitle className="text-[#FFBA08]">AI Style Transfer</CardTitle>
             <CardDescription>Generate a texture with AI.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -117,14 +117,16 @@ const ModelControls: FC<ModelControlsProps> = ({ setModel, setModelUrl, setGener
             {styleImageUrl && <img src={styleImageUrl} alt="Style preview" className="rounded-md object-cover w-full h-32" />}
             
             <div className="space-y-2">
-              <Label htmlFor="prompt">Style Prompt</Label>
+              <Label htmlFor="prompt" className="text-[#FFBA08]">Style Prompt</Label>
               <Textarea id="prompt" value={prompt} onChange={(e) => setPrompt(e.target.value)} placeholder="e.g., a vibrant graffiti wall" />
             </div>
 
-            <Button className="w-full bg-gradient-to-r from-primary to-accent text-white border-0 hover:from-accent hover:to-primary" onClick={handleGenerateStyle} disabled={isGenerating || !styleImageUrl}>
-              <Wand2 className="mr-2"/>
-              {isGenerating ? 'Generating...' : 'Generate Style'}
-            </Button>
+            <button className="w-full btn-gradient" onClick={handleGenerateStyle} disabled={isGenerating || !styleImageUrl}>
+                <span>
+                    <Wand2 className="mr-2 inline-block"/>
+                    {isGenerating ? 'Generating...' : 'Generate Style'}
+                </span>
+            </button>
             
             {isGenerating && <Progress value={undefined} className="w-full" />}
 

@@ -29,11 +29,11 @@ const CustomizationControls: FC<CustomizationControlsProps> = ({
     <Accordion type="multiple" defaultValue={['environment', 'material']} className="w-full">
       <AccordionItem value="environment">
         <AccordionTrigger>
-          <Sun className="mr-2"/> Environment
+          <Sun className="mr-2 text-[#FFBA08]"/> Environment
         </AccordionTrigger>
         <AccordionContent className="space-y-4 p-2">
           <div className="space-y-2">
-            <Label htmlFor="light-intensity">Light Intensity</Label>
+            <Label htmlFor="light-intensity" className="text-[#FFBA08]">Light Intensity</Label>
             <Slider
               id="light-intensity"
               min={0}
@@ -47,21 +47,21 @@ const CustomizationControls: FC<CustomizationControlsProps> = ({
       </AccordionItem>
       <AccordionItem value="material">
         <AccordionTrigger>
-          <Palette className="mr-2"/> Material
+          <Palette className="mr-2 text-[#FFBA08]"/> Material
         </AccordionTrigger>
         <AccordionContent className="p-2">
           <RadioGroup value={material} onValueChange={(value: MaterialType) => setMaterial(value)} className="space-y-2">
             <div className="flex items-center space-x-2">
               <RadioGroupItem value="matte" id="matte" />
-              <Label htmlFor="matte">Matte</Label>
+              <Label htmlFor="matte" className="hover:text-[#FAA307]">Matte</Label>
             </div>
             <div className="flex items-center space-x-2">
               <RadioGroupItem value="metallic" id="metallic" />
-              <Label htmlFor="metallic">Metallic</Label>
+              <Label htmlFor="metallic" className="hover:text-[#FAA307]">Metallic</Label>
             </div>
             <div className="flex items-center space-x-2">
               <RadioGroupItem value="wireframe" id="wireframe" />
-              <Label htmlFor="wireframe">Wireframe</Label>
+              <Label htmlFor="wireframe" className="hover:text-[#FAA307]">Wireframe</Label>
             </div>
           </RadioGroup>
         </AccordionContent>
