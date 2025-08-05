@@ -140,8 +140,8 @@ const ModelControls: FC<ModelControlsProps> = ({ setModelInfo, setGeneratedTextu
             
             <CardDescription className="text-white/70">Or select a predefined style:</CardDescription>
             <div className="grid grid-cols-2 gap-2">
-                <Button variant={activeStyle === 'https://placehold.co/300x200.png?text=Madhubani' ? 'default' : 'outline'} className="text-[#1B1B1B]" onClick={() => selectPredefinedStyle('https://placehold.co/300x200.png?text=Madhubani')} data-ai-hint="madhubani painting">Madhubani</Button>
-                <Button variant={activeStyle === 'https://placehold.co/300x200.png?text=Van+Gogh' ? 'default' : 'outline'} className="text-[#1B1B1B]" onClick={() => selectPredefinedStyle('https://placehold.co/300x200.png?text=Van+Gogh')} data-ai-hint="starry night">Van Gogh</Button>
+                <Button variant={activeStyle === 'https://placehold.co/300x200.png?text=Madhubani' ? 'default' : 'outline'} className="text-[#1B1B1B] font-bold" onClick={() => selectPredefinedStyle('https://placehold.co/300x200.png?text=Madhubani')} data-ai-hint="madhubani painting">Madhubani</Button>
+                <Button variant={activeStyle === 'https://placehold.co/300x200.png?text=Van+Gogh' ? 'default' : 'outline'} className="text-[#1B1B1B] font-bold" onClick={() => selectPredefinedStyle('https://placehold.co/300x200.png?text=Van+Gogh')} data-ai-hint="starry night">Van Gogh</Button>
             </div>
 
             {uploadedImagePreview && <img src={uploadedImagePreview} alt="Style preview" className="rounded-md object-cover w-full h-32" />}
