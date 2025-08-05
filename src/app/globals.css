@@ -4,57 +4,57 @@
 
 @layer base {
   :root {
-    --background: 226 94% 6%; /* #03071E */
-    --foreground: 226 80% 95%;
+    --background: 240 31% 8%; /* #0F0F1C */
+    --foreground: 0 0% 94%; /* #F0F0F0 */
 
-    --card: 348 83% 12%; /* #370617 */
-    --card-foreground: 0 0% 98%;
+    --card: 240 21% 15%; /* #1C1C2E */
+    --card-foreground: 0 0% 94%;
 
-    --popover: 226 94% 6%;
-    --popover-foreground: 0 0% 98%;
+    --popover: 240 31% 8%;
+    --popover-foreground: 0 0% 94%;
 
-    --primary: 0 100% 41%; /* #D00000 */
-    --primary-foreground: 0 0% 98%;
+    --primary: 173 100% 48%; /* #00F5D4 */
+    --primary-foreground: 240 31% 8%;
 
-    --secondary: 226 94% 10%;
-    --secondary-foreground: 0 0% 98%;
+    --secondary: 240 21% 15%;
+    --secondary-foreground: 0 0% 94%;
 
-    --muted: 226 94% 10%;
-    --muted-foreground: 226 10% 65%;
+    --muted: 240 21% 15%;
+    --muted-foreground: 240 5% 65%;
 
-    --accent: 38 96% 51%; /* #FAA307 */
-    --accent-foreground: 348 83% 12%;
+    --accent: 267 63% 49%; /* #7B2CBF */
+    --accent-foreground: 0 0% 94%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
+    --destructive: 349 100% 65%; /* #FF4D6D */
+    --destructive-foreground: 0 0% 94%;
 
-    --border: 226 94% 10%;
-    --input: 226 94% 10%;
-    --ring: 0 100% 41%;
+    --border: 240 21% 20%;
+    --input: 240 21% 15%;
+    --ring: 173 100% 48%;
 
     --radius: 0.5rem;
   }
  
   .dark {
-    --background: 226 94% 6%; /* #03071E */
-    --foreground: 0 0% 98%;
-    --card: 348 83% 12%; /* #370617 */
-    --card-foreground: 0 0% 98%;
-    --popover: 226 94% 6%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 0 100% 41%; /* #D00000 */
-    --primary-foreground: 0 0% 98%;
-    --secondary: 226 94% 10%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 226 94% 10%;
-    --muted-foreground: 226 10% 65%;
-    --accent: 38 96% 51%; /* #FAA307 */
-    --accent-foreground: 348 83% 12%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 226 94% 10%;
-    --input: 226 94% 10%;
-    --ring: 0 100% 41%;
+    --background: 240 31% 8%; /* #0F0F1C */
+    --foreground: 0 0% 94%; /* #F0F0F0 */
+    --card: 240 21% 15%; /* #1C1C2E */
+    --card-foreground: 0 0% 94%;
+    --popover: 240 31% 8%;
+    --popover-foreground: 0 0% 94%;
+    --primary: 173 100% 48%; /* #00F5D4 */
+    --primary-foreground: 240 31% 8%;
+    --secondary: 240 21% 15%;
+    --secondary-foreground: 0 0% 94%;
+    --muted: 240 21% 15%;
+    --muted-foreground: 240 5% 65%;
+    --accent: 267 63% 49%; /* #7B2CBF */
+    --accent-foreground: 0 0% 94%;
+    --destructive: 349 100% 65%; /* #FF4D6D */
+    --destructive-foreground: 0 0% 94%;
+    --border: 240 21% 20%;
+    --input: 240 21% 15%;
+    --ring: 173 100% 48%;
   }
 }
 
@@ -69,9 +69,9 @@
 
 @layer components {
   .btn-gradient {
-    @apply relative inline-flex items-center justify-center p-0.5 overflow-hidden text-sm font-medium text-gray-900 rounded-lg bg-gradient-to-br from-[#F48C06] to-[#FFBA08] group-hover:from-[#F48C06] group-hover:to-[#FFBA08] hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-orange-200 dark:focus:ring-orange-800;
+    @apply relative inline-flex items-center justify-center p-0.5 overflow-hidden text-sm font-medium text-gray-900 rounded-lg bg-gradient-to-br from-primary to-accent group-hover:from-primary group-hover:to-accent hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800;
   }
   .btn-gradient > span {
-    @apply relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0;
+    @apply relative px-5 py-2.5 transition-all ease-in duration-75 bg-background dark:bg-card rounded-md group-hover:bg-opacity-0;
   }
 }

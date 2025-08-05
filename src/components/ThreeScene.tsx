@@ -42,13 +42,7 @@ const ThreeScene: FC<ThreeSceneProps> = ({ model, modelUrl, material, lightInten
 
     // Scene
     const scene = new THREE.Scene();
-    const bgTextureLoader = new THREE.TextureLoader();
-    const bgTexture = bgTextureLoader.load('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIj48ZGVmcz48cGF0dGVybiBpZD0iZCIgd2lkdGg9IjEwIiBoZWlnaHQ9IjEwIiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIj48cGF0aCBmaWxsPSIjMzcwNjE3IiBmaWxsLW9wYWNpdHk9IjAuMiIgZD0iTTAgNWg1djVIOHoiPjwvcGF0aD48cGF0aCBmaWxsPSIjNkEwNDA5IiBmaWxsLW9wYWNpdHk9IjAuMiIgZD0iTTUgMGg1djVIOXoiPjwvcGF0aD48L3BhdHRlcm4+PHJhZGlhbEdyYWRpZW50IGlkPSJnIiBjeD0iNTAlIiBjeT0iNTAlIiByPSI1MCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiM5RDAyMDgiPjwvc3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM2QTA0MDkiPjwvc3RvcD48L3JhZGlhbEdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1clwoI2cpIj48L3JlY3Q+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNkKSI+PC9yZWN0Pjwvc3ZnPg==');
-    bgTexture.wrapS = THREE.RepeatWrapping;
-    bgTexture.wrapT = THREE.RepeatWrapping;
-    bgTexture.repeat.set(10,10);
-    scene.background = bgTexture;
-    
+    scene.background = new THREE.Color('#0F0F1C');
     sceneRef.current = scene;
 
     // Camera
@@ -78,7 +72,7 @@ const ThreeScene: FC<ThreeSceneProps> = ({ model, modelUrl, material, lightInten
 
     // Initial Object
     const geometry = new THREE.BoxGeometry(2, 2, 2);
-    const initialMaterial = new THREE.MeshStandardMaterial({ color: 0xD00000 });
+    const initialMaterial = new THREE.MeshStandardMaterial({ color: 0x00F5D4 });
     const cube = new THREE.Mesh(geometry, initialMaterial);
     scene.add(cube);
     meshRef.current = cube;
@@ -145,7 +139,7 @@ const ThreeScene: FC<ThreeSceneProps> = ({ model, modelUrl, material, lightInten
 
         const materialProps: THREE.MeshStandardMaterialParameters = {
             map: texture,
-            color: texture ? 0xffffff : 0xD00000
+            color: texture ? 0xffffff : 0x00F5D4
         };
 
         switch (material) {
@@ -153,7 +147,7 @@ const ThreeScene: FC<ThreeSceneProps> = ({ model, modelUrl, material, lightInten
                 newMaterial = new THREE.MeshStandardMaterial({ ...materialProps, metalness: 0.9, roughness: 0.1 });
                 break;
             case 'wireframe':
-                newMaterial = new THREE.MeshBasicMaterial({ color: 0xE85D04, wireframe: true });
+                newMaterial = new THREE.MeshBasicMaterial({ color: 0xFF4D6D, wireframe: true });
                 break;
             case 'matte':
             default:
@@ -197,7 +191,7 @@ const ThreeScene: FC<ThreeSceneProps> = ({ model, modelUrl, material, lightInten
 
         const materialProps: THREE.MeshStandardMaterialParameters = {
             map: texture,
-            color: texture ? 0xffffff : 0xD00000
+            color: texture ? 0xffffff : 0x00F5D4
         };
 
         switch (currentMaterialType) {
@@ -205,7 +199,7 @@ const ThreeScene: FC<ThreeSceneProps> = ({ model, modelUrl, material, lightInten
                 newMaterial = new THREE.MeshStandardMaterial({ ...materialProps, metalness: 0.9, roughness: 0.1 });
                 break;
             case 'wireframe':
-                newMaterial = new THREE.MeshBasicMaterial({ color: 0xE85D04, wireframe: true });
+                newMaterial = new THREE.MeshBasicMaterial({ color: 0xFF4D6D, wireframe: true });
                 break;
             case 'matte':
             default:
@@ -248,7 +242,7 @@ const ThreeScene: FC<ThreeSceneProps> = ({ model, modelUrl, material, lightInten
             break;
         }
 
-        const currentMaterial = (meshRef.current as any).material || new THREE.MeshStandardMaterial({ color: 0xD00000 });
+        const currentMaterial = (meshRef.current as any).material || new THREE.MeshStandardMaterial({ color: 0x00F5D4 });
         const newMesh = new THREE.Mesh(newGeometry, currentMaterial);
         sceneRef.current.add(newMesh);
         meshRef.current = newMesh;
