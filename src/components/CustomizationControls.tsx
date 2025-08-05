@@ -45,7 +45,7 @@ const CustomizationControls: FC<CustomizationControlsProps> = ({
           </div>
         </AccordionContent>
       </AccordionItem>
-      <AccordionItem value="material" className="mt-8">
+      <AccordionItem value="material" className="pt-8">
         <AccordionTrigger className="text-xl">
           <Palette className="mr-2 text-primary"/> Material
         </AccordionTrigger>
