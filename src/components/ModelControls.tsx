@@ -105,10 +105,10 @@ const ModelControls: FC<ModelControlsProps> = ({ setModelInfo, setGeneratedTextu
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid grid-cols-2 gap-2">
-              <Button variant="outline" className="text-lg font-bold border-primary hover:bg-primary hover:text-white" onClick={() => setModelInfo({ type: 'shape', shape: 'cube' })}><Box className="mr-2"/>Cube</Button>
-              <Button variant="outline" className="text-lg font-bold border-primary hover:bg-primary hover:text-white" onClick={() => setModelInfo({ type: 'shape', shape: 'sphere' })}><Circle className="mr-2"/>Sphere</Button>
-              <Button variant="outline" className="text-lg font-bold border-primary hover:bg-primary hover:text-white" onClick={() => setModelInfo({ type: 'shape', shape: 'knot' })}><GitCommit className="mr-2"/>Knot</Button>
-              <Button variant="outline" className="text-lg font-bold border-primary hover:bg-primary hover:text-white" onClick={() => setModelInfo({ type: 'url', url: 'https://firebasestorage.googleapis.com/v0/b/genkit-llm-7669a.appspot.com/o/jacket.glb?alt=media&token=4b3a4a74-95a2-4712-823d-a7fd7a5a8f47' })}>Jacket</Button>
+              <Button variant="outline" className="text-lg font-bold border-primary hover:bg-primary hover:text-white text-[#1B1B1B]" onClick={() => setModelInfo({ type: 'shape', shape: 'cube' })}><Box className="mr-2"/>Cube</Button>
+              <Button variant="outline" className="text-lg font-bold border-primary hover:bg-primary hover:text-white text-[#1B1B1B]" onClick={() => setModelInfo({ type: 'shape', shape: 'sphere' })}><Circle className="mr-2"/>Sphere</Button>
+              <Button variant="outline" className="text-lg font-bold border-primary hover:bg-primary hover:text-white text-[#1B1B1B]" onClick={() => setModelInfo({ type: 'shape', shape: 'knot' })}><GitCommit className="mr-2"/>Knot</Button>
+              <Button variant="outline" className="text-lg font-bold border-primary hover:bg-primary hover:text-white text-[#1B1B1B]" onClick={() => setModelInfo({ type: 'shape', shape: 'pyramid' })}><Pyramid className="mr-2"/>Pyramid</Button>
             </div>
             <input type="file" id="model-upload" className="hidden" accept=".glb,.gltf" onChange={handleModelUpload} />
             <Button variant="outline" className="w-full h-12 text-lg font-bold" onClick={() => document.getElementById('model-upload')?.click()}>
@@ -125,21 +125,23 @@ const ModelControls: FC<ModelControlsProps> = ({ setModelInfo, setGeneratedTextu
             <CardDescription className="text-white/70">Generate a texture with AI.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <Button variant="outline" className="w-full h-12 text-lg font-bold" onClick={() => document.getElementById('image-upload')?.click()}>
+            <button className="btn-gradient w-full h-12 text-lg font-bold" onClick={() => document.getElementById('image-upload')?.click()}>
               <Upload className="mr-2" />
-              {uploadedImagePreview ? 'Change' : 'Upload'} Style Image
-            </Button>
+              <span>
+                {uploadedImagePreview ? 'Change' : 'Upload'} Style Image
+              </span>
+            </button>
             <input type="file" id="image-upload" className="hidden" accept="image/*" onChange={handleImageUpload} />
             
             <CardDescription className="text-white/70">Or select a predefined style:</CardDescription>
             <div className="grid grid-cols-2 gap-2">
-                <Button variant={activeStyle === 'https://placehold.co/300x200.png?text=Madhubani' ? 'default' : 'outline'} onClick={() => selectPredefinedStyle('https://placehold.co/300x200.png?text=Madhubani')} data-ai-hint="madhubani painting">Madhubani</Button>
-                <Button variant={activeStyle === 'https://placehold.co/300x200.png?text=Van+Gogh' ? 'default' : 'outline'} onClick={() => selectPredefinedStyle('https://placehold.co/300x200.png?text=Van+Gogh')} data-ai-hint="starry night">Van Gogh</Button>
+                <Button variant={activeStyle === 'https://placehold.co/300x200.png?text=Madhubani' ? 'default' : 'outline'} className="text-[#1B1B1B]" onClick={() => selectPredefinedStyle('https://placehold.co/300x200.png?text=Madhubani')} data-ai-hint="madhubani painting">Madhubani</Button>
+                <Button variant={activeStyle === 'https://placehold.co/300x200.png?text=Van+Gogh' ? 'default' : 'outline'} className="text-[#1B1B1B]" onClick={() => selectPredefinedStyle('https://placehold.co/300x200.png?text=Van+Gogh')} data-ai-hint="starry night">Van Gogh</Button>
             </div>
 
             {uploadedImagePreview && <img src={uploadedImagePreview} alt="Style preview" className="rounded-md object-cover w-full h-32" />}
 
-            <Button variant="primary" className="w-full h-12 text-lg font-bold" onClick={handleGenerateStyle} disabled={isGenerating || !styleImageUrl}>
+            <Button variant="primary" className="w-full h-12 text-lg font-bold btn-gradient" onClick={handleGenerateStyle} disabled={isGenerating || !styleImageUrl}>
                 <Paintbrush className="mr-2"/>
                 {isGenerating ? 'Generating...' : 'Generate Style'}
             </Button>

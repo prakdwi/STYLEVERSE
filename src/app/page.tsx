@@ -18,7 +18,7 @@ export type ModelInfo = {
 
 
 const Home: FC = () => {
-  const [modelInfo, setModelInfo] = React.useState<ModelInfo>({type: 'url', url: 'https://firebasestorage.googleapis.com/v0/b/genkit-llm-7669a.appspot.com/o/jacket.glb?alt=media&token=4b3a4a74-95a2-4712-823d-a7fd7a5a8f47'});
+  const [modelInfo, setModelInfo] = React.useState<ModelInfo>({type: 'url', url: 'https://firebasestorage.googleapis.com/v0/b/genkit-llm-7669a.appspot.com/o/jacket_2.glb?alt=media&token=f94a4855-4674-4b52-a59a-25c786a63507'});
   const [material, setMaterial] = React.useState<MaterialType>('matte');
   const [lightIntensity, setLightIntensity] = React.useState(1.5);
   const [generatedTexture, setGeneratedTexture] = React.useState<string | null>(null);
