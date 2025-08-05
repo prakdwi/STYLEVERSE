@@ -9,10 +9,10 @@ interface HeaderProps {
 
 const Header: FC<HeaderProps> = ({ onSnapshot, onExport }) => {
   return (
-    <header className="flex items-center justify-between p-4 h-16">
-      <h1 className="text-2xl font-headline font-bold text-primary">StyleVerse 3D</h1>
+    <header className="flex items-center justify-between p-4 h-16 bg-[#141424] text-white border-b-2 border-t-2 border-[#333]">
+      <h1 className="text-4xl font-headline font-bold text-primary animate-pulse">StyleVerse 3D</h1>
       <div className="flex items-center gap-2">
-        <Button variant="outline" onClick={onSnapshot} className="border-destructive text-destructive hover:bg-destructive hover:text-destructive-foreground rounded-full w-10 h-10 p-0">
+        <Button variant="outline" onClick={onSnapshot} className="border-destructive text-destructive hover:bg-destructive hover:text-white rounded-full w-10 h-10 p-0">
           <Camera />
         </Button>
         <button onClick={onExport} className="btn-gradient shadow-lg shadow-accent/20">

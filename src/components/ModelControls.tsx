@@ -80,25 +80,25 @@ const ModelControls: FC<ModelControlsProps> = ({ setModel, setModelUrl, setGener
 
   return (
     <Tabs defaultValue="models" className="w-full flex flex-col h-full">
-      <TabsList className="grid w-full grid-cols-2">
+      <TabsList className="grid w-full grid-cols-2 bg-[#0F0F1C] text-white">
         <TabsTrigger value="models">Models</TabsTrigger>
         <TabsTrigger value="styles">Styles</TabsTrigger>
       </TabsList>
       <TabsContent value="models" className="flex-grow mt-4">
         <Card className="bg-transparent border-0 shadow-none">
           <CardHeader>
-            <CardTitle className="text-primary">Select a Model</CardTitle>
-            <CardDescription>Choose a base model or upload your own.</CardDescription>
+            <CardTitle className="text-primary text-2xl">Select a Model</CardTitle>
+            <CardDescription className="text-white/70">Choose a base model or upload your own.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid grid-cols-2 gap-2">
-              <Button variant="outline" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground" onClick={() => { setModel('cube'); setModelUrl(null); }}><Box className="mr-2"/>Cube</Button>
-              <Button variant="outline" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground" onClick={() => { setModel('sphere'); setModelUrl(null); }}><Circle className="mr-2"/>Sphere</Button>
-              <Button variant="outline" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground" onClick={() => { setModel('torus'); setModelUrl(null); }}><ToyBrick className="mr-2"/>Torus</Button>
+              <Button variant="outline" className="text-lg border-primary text-primary hover:bg-primary hover:text-white" onClick={() => { setModel('cube'); setModelUrl(null); }}><Box className="mr-2"/>Cube</Button>
+              <Button variant="outline" className="text-lg border-primary text-primary hover:bg-primary hover:text-white" onClick={() => { setModel('sphere'); setModelUrl(null); }}><Circle className="mr-2"/>Sphere</Button>
+              <Button variant="outline" className="text-lg border-primary text-primary hover:bg-primary hover:text-white" onClick={() => { setModel('torus'); setModelUrl(null); }}><ToyBrick className="mr-2"/>Torus</Button>
             </div>
             <input type="file" id="model-upload" className="hidden" accept=".obj,.glb,.gltf" onChange={handleModelUpload} />
             <button className="w-full btn-gradient" onClick={() => document.getElementById('model-upload')?.click()}>
-                <span>
+                <span className="text-lg">
                     <Upload className="mr-2 inline-block" />
                     Upload .obj/.glb
                 </span>
@@ -109,26 +109,26 @@ const ModelControls: FC<ModelControlsProps> = ({ setModel, setModelUrl, setGener
       <TabsContent value="styles" className="flex-grow mt-4">
         <Card className="bg-transparent border-0 shadow-none">
           <CardHeader>
-            <CardTitle className="text-primary">AI Style Transfer</CardTitle>
-            <CardDescription>Generate a texture with AI.</CardDescription>
+            <CardTitle className="text-primary text-2xl">AI Style Transfer</CardTitle>
+            <CardDescription className="text-white/70">Generate a texture with AI.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <input type="file" id="image-upload" className="hidden" accept="image/*" onChange={handleImageUpload} />
-            <Button variant="outline" className="w-full" onClick={() => document.getElementById('image-upload')?.click()}>
+            <Button variant="outline" className="w-full text-lg" onClick={() => document.getElementById('image-upload')?.click()}>
               <Upload className="mr-2" />
               {uploadedImagePreview ? 'Change' : 'Upload'} Style Image
             </Button>
             
-            <CardDescription>Or select a predefined style:</CardDescription>
+            <CardDescription className="text-white/70">Or select a predefined style:</CardDescription>
             <div className="grid grid-cols-2 gap-2">
-                <Button variant={styleImageUrl === 'https://placehold.co/300x200.png?text=Madhubani' ? 'default' : 'outline'} onClick={() => selectPredefinedStyle('https://placehold.co/300x200.png?text=Madhubani')} data-ai-hint="madhubani painting">Madhubani</Button>
-                <Button variant={styleImageUrl === 'https://placehold.co/300x200.png?text=Van+Gogh' ? 'default' : 'outline'} onClick={() => selectPredefinedStyle('https://placehold.co/300x200.png?text=Van+Gogh')} data-ai-hint="starry night">Van Gogh</Button>
+                <Button className="text-lg" variant={styleImageUrl === 'https://placehold.co/300x200.png?text=Madhubani' ? 'default' : 'outline'} onClick={() => selectPredefinedStyle('https://placehold.co/300x200.png?text=Madhubani')} data-ai-hint="madhubani painting">Madhubani</Button>
+                <Button className="text-lg" variant={styleImageUrl === 'https://placehold.co/300x200.png?text=Van+Gogh' ? 'default' : 'outline'} onClick={() => selectPredefinedStyle('https://placehold.co/300x200.png?text=Van+Gogh')} data-ai-hint="starry night">Van Gogh</Button>
             </div>
 
             {uploadedImagePreview && <img src={uploadedImagePreview} alt="Style preview" className="rounded-md object-cover w-full h-32" />}
 
             <button className="w-full btn-gradient" onClick={handleGenerateStyle} disabled={isGenerating || !styleImageUrl}>
-                <span>
+                <span className="text-lg">
                     <Wand2 className="mr-2 inline-block"/>
                     {isGenerating ? 'Generating...' : 'Generate Style'}
                 </span>

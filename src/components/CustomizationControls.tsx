@@ -26,14 +26,14 @@ const CustomizationControls: FC<CustomizationControlsProps> = ({
   setLightIntensity,
 }) => {
   return (
-    <Accordion type="multiple" defaultValue={['environment', 'material']} className="w-full">
+    <Accordion type="multiple" defaultValue={['environment', 'material']} className="w-full text-white">
       <AccordionItem value="environment">
-        <AccordionTrigger>
+        <AccordionTrigger className="text-xl">
           <Sun className="mr-2 text-primary"/> Environment
         </AccordionTrigger>
         <AccordionContent className="space-y-4 p-2">
           <div className="space-y-2">
-            <Label htmlFor="light-intensity" className="text-primary">Light Intensity</Label>
+            <Label htmlFor="light-intensity" className="text-primary text-lg">Light Intensity</Label>
             <Slider
               id="light-intensity"
               min={0}
@@ -46,11 +46,11 @@ const CustomizationControls: FC<CustomizationControlsProps> = ({
         </AccordionContent>
       </AccordionItem>
       <AccordionItem value="material">
-        <AccordionTrigger>
+        <AccordionTrigger className="text-xl">
           <Palette className="mr-2 text-primary"/> Material
         </AccordionTrigger>
         <AccordionContent className="p-2">
-          <RadioGroup value={material} onValueChange={(value: MaterialType) => setMaterial(value)} className="space-y-2">
+          <RadioGroup value={material} onValueChange={(value: MaterialType) => setMaterial(value)} className="space-y-2 text-lg">
             <div className="flex items-center space-x-2">
               <RadioGroupItem value="matte" id="matte" />
               <Label htmlFor="matte" className="hover:text-primary">Matte</Label>

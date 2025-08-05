@@ -4,57 +4,57 @@
 
 @layer base {
   :root {
-    --background: 240 31% 8%; /* #0F0F1C */
-    --foreground: 0 0% 94%; /* #F0F0F0 */
+    --background: 200 83% 53%; /* #4AD9E8 */
+    --foreground: 0 0% 100%; /* #FFFFFF */
 
-    --card: 240 21% 15%; /* #1C1C2E */
-    --card-foreground: 0 0% 94%;
+    --card: 45 40% 85%; /* #E6E2D1 */
+    --card-foreground: 0 0% 10%;
 
-    --popover: 240 31% 8%;
-    --popover-foreground: 0 0% 94%;
+    --popover: 45 40% 85%;
+    --popover-foreground: 0 0% 10%;
 
-    --primary: 173 100% 48%; /* #00F5D4 */
-    --primary-foreground: 240 31% 8%;
+    --primary: 349 100% 65%; /* #FF4D6D */
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 240 21% 15%;
-    --secondary-foreground: 0 0% 94%;
+    --secondary: 45 40% 85%;
+    --secondary-foreground: 0 0% 10%;
 
-    --muted: 240 21% 15%;
-    --muted-foreground: 240 5% 65%;
+    --muted: 45 40% 85%;
+    --muted-foreground: 45 10% 40%;
 
     --accent: 267 63% 49%; /* #7B2CBF */
-    --accent-foreground: 0 0% 94%;
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 349 100% 65%; /* #FF4D6D */
-    --destructive-foreground: 0 0% 94%;
+    --destructive: 349 80% 50%; /* #F03E5D */
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 240 21% 20%;
-    --input: 240 21% 15%;
-    --ring: 173 100% 48%;
+    --border: 45 20% 70%;
+    --input: 45 40% 90%;
+    --ring: 349 100% 65%;
 
     --radius: 0.5rem;
   }
  
   .dark {
-    --background: 240 31% 8%; /* #0F0F1C */
-    --foreground: 0 0% 94%; /* #F0F0F0 */
-    --card: 240 21% 15%; /* #1C1C2E */
-    --card-foreground: 0 0% 94%;
-    --popover: 240 31% 8%;
-    --popover-foreground: 0 0% 94%;
-    --primary: 173 100% 48%; /* #00F5D4 */
-    --primary-foreground: 240 31% 8%;
-    --secondary: 240 21% 15%;
-    --secondary-foreground: 0 0% 94%;
-    --muted: 240 21% 15%;
-    --muted-foreground: 240 5% 65%;
+    --background: 200 83% 53%; /* #4AD9E8 */
+    --foreground: 0 0% 100%; /* #FFFFFF */
+    --card: 45 40% 85%; /* #E6E2D1 */
+    --card-foreground: 0 0% 10%;
+    --popover: 45 40% 85%;
+    --popover-foreground: 0 0% 10%;
+    --primary: 349 100% 65%; /* #FF4D6D */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 45 40% 85%;
+    --secondary-foreground: 0 0% 10%;
+    --muted: 45 40% 85%;
+    --muted-foreground: 45 10% 40%;
     --accent: 267 63% 49%; /* #7B2CBF */
-    --accent-foreground: 0 0% 94%;
-    --destructive: 349 100% 65%; /* #FF4D6D */
-    --destructive-foreground: 0 0% 94%;
-    --border: 240 21% 20%;
-    --input: 240 21% 15%;
-    --ring: 173 100% 48%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 349 80% 50%; /* #F03E5D */
+    --destructive-foreground: 0 0% 100%;
+    --border: 45 20% 70%;
+    --input: 45 40% 90%;
+    --ring: 349 100% 65%;
   }
 }
 
@@ -63,15 +63,33 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    background-color: hsl(var(--background));
+    background-image:
+      radial-gradient(circle at 1px 1px, hsl(var(--foreground)) 1px, transparent 0);
+    background-size: 1rem 1rem;
+    color: hsl(var(--foreground));
   }
 }
 
 @layer components {
   .btn-gradient {
-    @apply relative inline-flex items-center justify-center p-0.5 overflow-hidden text-sm font-medium text-gray-900 rounded-lg bg-gradient-to-br from-primary to-accent group-hover:from-primary group-hover:to-accent hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800;
+    @apply relative inline-flex items-center justify-center p-0.5 overflow-hidden text-sm font-medium text-white rounded-lg bg-gradient-to-br from-primary to-accent group-hover:from-primary group-hover:to-accent hover:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800;
   }
   .btn-gradient > span {
-    @apply relative px-5 py-2.5 transition-all ease-in duration-75 bg-background dark:bg-card rounded-md group-hover:bg-opacity-0;
+    @apply relative px-5 py-2.5 transition-all ease-in duration-75 bg-card text-card-foreground rounded-md group-hover:bg-opacity-0 group-hover:text-white;
+  }
+
+  .tv-screen::after {
+    content: ' ';
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+    z-index: 2;
+    background-size: 100% 2px, 3px 100%;
+    pointer-events: none;
   }
 }
