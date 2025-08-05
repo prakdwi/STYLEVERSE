@@ -17,7 +17,7 @@ const ClothingIcon = ({ type }: { type: 'jacket' }) => {
         case 'jacket': return <path d="M12 2L4 6v8h16V6l-8-4zM4 14v6h5v-3h6v3h5v-6H4z"/>;
       }
     };
-    return <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2"><SvgIcon /></svg>
+    return <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2"><SvgIcon /></svg>
 };
 
 
@@ -116,10 +116,10 @@ const ModelControls: FC<ModelControlsProps> = ({ setModel, setModelUrl, setGener
             </div>
             <input type="file" id="model-upload" className="hidden" accept=".obj,.glb,.gltf" onChange={handleModelUpload} />
             <button className="w-full btn-gradient" onClick={() => document.getElementById('model-upload')?.click()}>
-                <span className="text-lg">
-                    <Upload className="mr-2 inline-block" />
-                    Upload .obj/.glb
-                </span>
+              <span className="flex items-center justify-center text-lg">
+                <Upload className="mr-2 inline-block" />
+                Upload .obj/.glb
+              </span>
             </button>
           </CardContent>
         </Card>
@@ -146,7 +146,7 @@ const ModelControls: FC<ModelControlsProps> = ({ setModel, setModelUrl, setGener
             {uploadedImagePreview && <img src={uploadedImagePreview} alt="Style preview" className="rounded-md object-cover w-full h-32" />}
 
             <button className="w-full btn-gradient" onClick={handleGenerateStyle} disabled={isGenerating || !styleImageUrl}>
-                <span className="text-lg">
+                <span className="flex items-center justify-center text-lg">
                     <Wand2 className="mr-2 inline-block"/>
                     {isGenerating ? 'Generating...' : 'Generate Style'}
                 </span>

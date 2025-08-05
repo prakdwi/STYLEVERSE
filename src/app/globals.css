@@ -73,10 +73,10 @@
 
 @layer components {
   .btn-gradient {
-    @apply relative inline-flex items-center justify-center p-0.5 overflow-hidden text-sm font-medium text-white rounded-lg bg-gradient-to-br from-primary to-accent group-hover:from-primary group-hover:to-accent hover:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800;
+    @apply relative inline-flex items-center justify-center p-4 overflow-hidden text-lg font-medium text-white rounded-lg bg-gradient-to-br from-primary to-accent hover:from-primary hover:to-accent hover:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800 transition-all ease-in duration-75;
   }
   .btn-gradient > span {
-    @apply relative px-5 py-2.5 transition-all ease-in duration-75 bg-card text-card-foreground rounded-md group-hover:bg-opacity-0 group-hover:text-white;
+    @apply relative transition-all ease-in duration-75;
   }
 
   .tv-screen::after {
