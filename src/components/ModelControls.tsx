@@ -121,10 +121,12 @@ const ModelControls: FC<ModelControlsProps> = ({ setModel, setModelUrl, setGener
           </CardHeader>
           <CardContent className="space-y-4">
             <input type="file" id="image-upload" className="hidden" accept="image/*" onChange={handleImageUpload} />
-            <Button variant="outline" className="w-full text-lg" onClick={() => document.getElementById('image-upload')?.click()}>
-              <Upload className="mr-2" />
-              {uploadedImagePreview ? 'Change' : 'Upload'} Style Image
-            </Button>
+            <button className="w-full btn-gradient" onClick={() => document.getElementById('image-upload')?.click()}>
+              <span className="flex items-center justify-center text-lg">
+                <Upload className="mr-2 inline-block" />
+                {uploadedImagePreview ? 'Change' : 'Upload'} Style Image
+              </span>
+            </button>
             
             <CardDescription className="text-white/70">Or select a predefined style:</CardDescription>
             <div className="grid grid-cols-2 gap-2">
