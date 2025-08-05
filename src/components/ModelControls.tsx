@@ -20,6 +20,7 @@ const ModelControls: FC<ModelControlsProps> = ({ setModel, setModelUrl, setGener
   const { toast } = useToast();
   const [styleImageUrl, setStyleImageUrl] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [uploadedImagePreview, setUploadedImagePreview] = useState<string | null>(null);
 
   const handleModelUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
@@ -33,7 +34,9 @@ const ModelControls: FC<ModelControlsProps> = ({ setModel, setModelUrl, setGener
       const file = event.target.files[0];
       const reader = new FileReader();
       reader.onload = (e) => {
-        setStyleImageUrl(e.target?.result as string);
+        const result = e.target?.result as string;
+        setStyleImageUrl(result);
+        setUploadedImagePreview(result);
       };
       reader.readAsDataURL(file);
     }
@@ -72,6 +75,7 @@ const ModelControls: FC<ModelControlsProps> = ({ setModel, setModelUrl, setGener
   
   const selectPredefinedStyle = (url: string) => {
     setStyleImageUrl(url);
+    setUploadedImagePreview(null);
   };
 
   return (
@@ -112,16 +116,16 @@ const ModelControls: FC<ModelControlsProps> = ({ setModel, setModelUrl, setGener
             <input type="file" id="image-upload" className="hidden" accept="image/*" onChange={handleImageUpload} />
             <Button variant="outline" className="w-full" onClick={() => document.getElementById('image-upload')?.click()}>
               <Upload className="mr-2" />
-              {styleImageUrl ? 'Change' : 'Upload'} Style Image
+              {uploadedImagePreview ? 'Change' : 'Upload'} Style Image
             </Button>
             
             <CardDescription>Or select a predefined style:</CardDescription>
             <div className="grid grid-cols-2 gap-2">
-                <Button variant='outline' onClick={() => selectPredefinedStyle('https://placehold.co/300x200.png?text=Synthwave')} data-ai-hint="synthwave sunset">Synthwave</Button>
-                <Button variant='outline' onClick={() => selectPredefinedStyle('https://placehold.co/300x200.png?text=Van+Gogh')} data-ai-hint="starry night">Van Gogh</Button>
+                <Button variant='outline' onClick={() => selectPredefinedStyle('https://placehold.co/300x200.png')} data-ai-hint="synthwave sunset">Synthwave</Button>
+                <Button variant='outline' onClick={() => selectPredefinedStyle('https://placehold.co/300x200.png')} data-ai-hint="starry night">Van Gogh</Button>
             </div>
 
-            {styleImageUrl && <img src={styleImageUrl} alt="Style preview" className="rounded-md object-cover w-full h-32" />}
+            {uploadedImagePreview && <img src={uploadedImagePreview} alt="Style preview" className="rounded-md object-cover w-full h-32" />}
 
             <button className="w-full btn-gradient" onClick={handleGenerateStyle} disabled={isGenerating || !styleImageUrl}>
                 <span>
