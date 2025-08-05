@@ -5,6 +5,7 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import { GLTFExporter } from 'three/examples/jsm/exporters/GLTFExporter.js';
 import type { ModelInfo, MaterialType } from '@/app/page';
 
 interface ThreeSceneProps {
@@ -103,12 +104,38 @@ const ThreeScene: FC<ThreeSceneProps> = ({ modelInfo, material, lightIntensity, 
     }
     window.addEventListener('snapshot', takeSnapshot);
 
+    const doExport = () => {
+      const exporter = new GLTFExporter();
+      if(meshRef.current && sceneRef.current){
+        exporter.parse(
+          meshRef.current,
+          (result) => {
+            const output = JSON.stringify(result, null, 2);
+            const blob = new Blob([output], {type: 'application/json'});
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.download = 'model.glb';
+            link.href = url;
+            link.click();
+          },
+          (error) => {
+            console.error('An error happened during parsing', error);
+          },
+          {
+            binary: true,
+          }
+        )
+      }
+    }
+    window.addEventListener('export', doExport);
+
 
     // Cleanup
     return () => {
       if(requestRef.current) cancelAnimationFrame(requestRef.current);
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('snapshot', takeSnapshot);
+      window.removeEventListener('export', doExport);
       if(controlsRef.current) controlsRef.current.dispose();
       if (currentMount && renderer.domElement) {
         currentMount.removeChild(renderer.domElement);
@@ -278,3 +305,5 @@ const ThreeScene: FC<ThreeSceneProps> = ({ modelInfo, material, lightIntensity, 
 };
 
 export default ThreeScene;
+
+    
