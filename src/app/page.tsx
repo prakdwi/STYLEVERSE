@@ -7,7 +7,7 @@ import CustomizationControls from '@/components/CustomizationControls';
 import ThreeScene from '@/components/ThreeScene';
 
 export type MaterialType = 'matte' | 'metallic' | 'wireframe' | 'cotton' | 'silk' | 'denim';
-export type ModelType = 'cube' | 'sphere' | 'knot' | 'jacket';
+export type ModelType = 'cube' | 'sphere' | 'knot' | 'pyramid';
 
 const Home: FC = () => {
   const [model, setModel] = React.useState<ModelType>('cube');
@@ -28,14 +28,7 @@ const Home: FC = () => {
 
   const handleSetModel = (newModel: ModelType) => {
     setModel(newModel);
-    if (newModel === 'jacket') {
-      // Set a default model URL for the jacket.
-      // You can replace this URL with your own self-hosted model.
-      setModelUrl('https://firebasestorage.googleapis.com/v0/b/genkit-llm-7669a.appspot.com/o/jacket.glb?alt=media&token=2c499fcf-0158-4b74-a212-3b36329c3a34');
-    } else {
-      // For other models, clear the URL to use the built-in geometry.
-      setModelUrl(null);
-    }
+    setModelUrl(null);
   };
 
   return (

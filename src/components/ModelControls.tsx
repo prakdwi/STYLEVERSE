@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Box, Circle, Upload, Paintbrush, GitCommit, Shirt } from 'lucide-react';
+import { Box, Circle, Upload, Paintbrush, GitCommit, Pyramid } from 'lucide-react';
 import type { ModelType } from '@/app/page';
 import { generateStyle } from '@/app/actions';
 import { useToast } from '@/hooks/use-toast';
@@ -28,8 +28,6 @@ const ModelControls: FC<ModelControlsProps> = ({ setModel, setModelUrl, setGener
     if (event.target.files && event.target.files[0]) {
       const file = event.target.files[0];
       setModelUrl(URL.createObjectURL(file));
-      // Also set the model type to 'jacket' when a model is uploaded.
-      setModel('jacket');
     }
   };
   
@@ -101,7 +99,7 @@ const ModelControls: FC<ModelControlsProps> = ({ setModel, setModelUrl, setGener
               <Button variant="outline" className="text-lg font-bold border-primary text-[#1B1B1B] hover:bg-primary hover:text-white" onClick={() => setModel('cube')}><Box className="mr-2"/>Cube</Button>
               <Button variant="outline" className="text-lg font-bold border-primary text-[#1B1B1B] hover:bg-primary hover:text-white" onClick={() => setModel('sphere')}><Circle className="mr-2"/>Sphere</Button>
               <Button variant="outline" className="text-lg font-bold border-primary text-[#1B1B1B] hover:bg-primary hover:text-white" onClick={() => setModel('knot')}><GitCommit className="mr-2"/>Knot</Button>
-              <Button variant="outline" className="text-lg font-bold border-primary text-[#1B1B1B] hover:bg-primary hover:text-white" onClick={() => setModel('jacket')}><Shirt className="mr-2" />Jacket</Button>
+              <Button variant="outline" className="text-lg font-bold border-primary text-[#1B1B1B] hover:bg-primary hover:text-white" onClick={() => setModel('pyramid')}><Pyramid className="mr-2" />Pyramid</Button>
             </div>
             <input type="file" id="model-upload" className="hidden" accept=".obj,.glb,.gltf" onChange={handleModelUpload} />
             <button className="w-full btn-gradient" onClick={() => document.getElementById('model-upload')?.click()}>
@@ -120,13 +118,13 @@ const ModelControls: FC<ModelControlsProps> = ({ setModel, setModelUrl, setGener
             <CardDescription className="text-white/70">Generate a texture with AI.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <input type="file" id="image-upload" className="hidden" accept="image/*" onChange={handleImageUpload} />
             <button className="w-full btn-gradient" onClick={() => document.getElementById('image-upload')?.click()}>
               <span className="flex items-center justify-center text-lg">
                 <Upload className="mr-2 inline-block" />
                 {uploadedImagePreview ? 'Change' : 'Upload'} Style Image
               </span>
             </button>
+            <input type="file" id="image-upload" className="hidden" accept="image/*" onChange={handleImageUpload} />
             
             <CardDescription className="text-white/70">Or select a predefined style:</CardDescription>
             <div className="grid grid-cols-2 gap-2">

@@ -249,22 +249,20 @@ const ThreeScene: FC<ThreeSceneProps> = ({ model, modelUrl, material, lightInten
         case 'knot':
           newGeometry = new THREE.TorusKnotGeometry(1, 0.4, 100, 16);
           break;
+        case 'pyramid':
+          newGeometry = new THREE.TetrahedronGeometry(2, 0);
+          break;
         case 'cube':
         default:
           newGeometry = new THREE.BoxGeometry(2, 2, 2);
           break;
       }
-
-      if (model !== 'jacket') {
-        const currentMaterial = (meshRef.current as any)?.material || new THREE.MeshStandardMaterial({ color: 0x00F5D4 });
-        const newMesh = new THREE.Mesh(newGeometry, currentMaterial);
-        if (scene) {
-          scene.add(newMesh);
-        }
-        meshRef.current = newMesh;
-      } else {
-        meshRef.current = null;
+      const currentMaterial = (meshRef.current as any)?.material || new THREE.MeshStandardMaterial({ color: 0x00F5D4 });
+      const newMesh = new THREE.Mesh(newGeometry, currentMaterial);
+      if (scene) {
+        scene.add(newMesh);
       }
+      meshRef.current = newMesh;
     }
   }, [model, modelUrl]);
 
