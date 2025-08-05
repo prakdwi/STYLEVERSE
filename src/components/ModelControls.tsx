@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Box, Circle, Upload, Wand2, GitCommit } from 'lucide-react';
+import { Box, Circle, Upload, Paintbrush, GitCommit } from 'lucide-react';
 import type { ModelType } from '@/app/page';
 import { generateStyle } from '@/app/actions';
 import { useToast } from '@/hooks/use-toast';
@@ -147,7 +147,7 @@ const ModelControls: FC<ModelControlsProps> = ({ setModel, setModelUrl, setGener
 
             <button className="w-full btn-gradient" onClick={handleGenerateStyle} disabled={isGenerating || !styleImageUrl}>
                 <span className="flex items-center justify-center text-lg">
-                    <Wand2 className="mr-2 inline-block"/>
+                    <Paintbrush className="mr-2 inline-block"/>
                     {isGenerating ? 'Generating...' : 'Generate Style'}
                 </span>
             </button>
