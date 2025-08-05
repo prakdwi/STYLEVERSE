@@ -3,6 +3,7 @@ import type { FC } from 'react';
 import React, { useRef, useEffect } from 'react';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { OBJLoader } from 'three-obj-loader';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import type { ModelType, MaterialType } from '@/app/page';
 
@@ -36,6 +37,10 @@ const ThreeScene: FC<ThreeSceneProps> = ({ model, modelUrl, material, lightInten
 
   useEffect(() => {
     if (!mountRef.current) return;
+
+    // Extend OBJLoader
+    const objLoader = new OBJLoader();
+    THREE.Cache.enabled = true;
 
     const currentMount = mountRef.current;
 
@@ -226,10 +231,19 @@ const ThreeScene: FC<ThreeSceneProps> = ({ model, modelUrl, material, lightInten
         applyMaterial(meshRef.current, newMaterial);
     };
 
-    const loader = new GLTFLoader();
-    loader.load(url, (gltf) => onModelLoaded(gltf.scene), undefined, (error) => {
-      console.error('An error happened while loading the GLB model:', error);
-    });
+    const fileExtension = url.split('.').pop()?.toLowerCase();
+    
+    if (fileExtension === 'obj') {
+        const loader = new OBJLoader();
+        loader.load(url, onModelLoaded, undefined, (error) => {
+            console.error('An error happened while loading the OBJ model:', error);
+        });
+    } else { // Assume glb/gltf
+        const loader = new GLTFLoader();
+        loader.load(url, (gltf) => onModelLoaded(gltf.scene), undefined, (error) => {
+            console.error('An error happened while loading the GLB/GLTF model:', error);
+        });
+    }
   };
 
   useEffect(() => {
