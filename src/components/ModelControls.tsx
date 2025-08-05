@@ -98,10 +98,10 @@ const ModelControls: FC<ModelControlsProps> = ({ setModel, setModelUrl, setGener
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid grid-cols-2 gap-2">
-              <Button variant="outline" className="text-lg font-bold border-primary text-black hover:bg-primary hover:text-white" onClick={() => setModel('cube')}><Box className="mr-2"/>Cube</Button>
-              <Button variant="outline" className="text-lg font-bold border-primary text-black hover:bg-primary hover:text-white" onClick={() => setModel('sphere')}><Circle className="mr-2"/>Sphere</Button>
-              <Button variant="outline" className="text-lg font-bold border-primary text-black hover:bg-primary hover:text-white" onClick={() => setModel('knot')}><GitCommit className="mr-2"/>Knot</Button>
-              <Button variant="outline" className="text-lg font-bold border-primary text-black hover:bg-primary hover:text-white" onClick={() => setModel('jacket')}><Shirt className="mr-2" />Jacket</Button>
+              <Button variant="outline" className="text-lg font-bold border-primary text-[#1B1B1B] hover:bg-primary hover:text-white" onClick={() => setModel('cube')}><Box className="mr-2"/>Cube</Button>
+              <Button variant="outline" className="text-lg font-bold border-primary text-[#1B1B1B] hover:bg-primary hover:text-white" onClick={() => setModel('sphere')}><Circle className="mr-2"/>Sphere</Button>
+              <Button variant="outline" className="text-lg font-bold border-primary text-[#1B1B1B] hover:bg-primary hover:text-white" onClick={() => setModel('knot')}><GitCommit className="mr-2"/>Knot</Button>
+              <Button variant="outline" className="text-lg font-bold border-primary text-[#1B1B1B] hover:bg-primary hover:text-white" onClick={() => setModel('jacket')}><Shirt className="mr-2" />Jacket</Button>
             </div>
             <input type="file" id="model-upload" className="hidden" accept=".obj,.glb,.gltf" onChange={handleModelUpload} />
             <button className="w-full btn-gradient" onClick={() => document.getElementById('model-upload')?.click()}>
@@ -130,8 +130,8 @@ const ModelControls: FC<ModelControlsProps> = ({ setModel, setModelUrl, setGener
             
             <CardDescription className="text-white/70">Or select a predefined style:</CardDescription>
             <div className="grid grid-cols-2 gap-2">
-                <Button className="text-lg" variant={activeStyle === 'https://placehold.co/300x200.png?text=Madhubani' ? 'default' : 'outline'} onClick={() => selectPredefinedStyle('https://placehold.co/300x200.png?text=Madhubani')} data-ai-hint="madhubani painting">Madhubani</Button>
-                <Button className="text-lg" variant={activeStyle === 'https://placehold.co/300x200.png?text=Van+Gogh' ? 'default' : 'outline'} onClick={() => selectPredefinedStyle('https://placehold.co/300x200.png?text=Van+Gogh')} data-ai-hint="starry night">Van Gogh</Button>
+                <Button className="text-lg text-[#1B1B1B]" variant={activeStyle === 'https://placehold.co/300x200.png?text=Madhubani' ? 'default' : 'outline'} onClick={() => selectPredefinedStyle('https://placehold.co/300x200.png?text=Madhubani')} data-ai-hint="madhubani painting">Madhubani</Button>
+                <Button className="text-lg text-[#1B1B1B]" variant={activeStyle === 'https://placehold.co/300x200.png?text=Van+Gogh' ? 'default' : 'outline'} onClick={() => selectPredefinedStyle('https://placehold.co/300x200.png?text=Van+Gogh')} data-ai-hint="starry night">Van Gogh</Button>
             </div>
 
             {uploadedImagePreview && <img src={uploadedImagePreview} alt="Style preview" className="rounded-md object-cover w-full h-32" />}
