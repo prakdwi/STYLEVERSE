@@ -7,7 +7,7 @@ import CustomizationControls from '@/components/CustomizationControls';
 import ThreeScene from '@/components/ThreeScene';
 
 export type MaterialType = 'matte' | 'metallic' | 'wireframe' | 'cotton' | 'silk' | 'denim';
-export type ModelType = 'cube' | 'sphere' | 'torus' | 'cone' | 'knot' | 'shirt' | 'skirt' | 'jacket';
+export type ModelType = 'cube' | 'sphere' | 'knot' | 'jacket';
 
 const Home: FC = () => {
   const [model, setModel] = React.useState<ModelType>('cube');
@@ -28,11 +28,9 @@ const Home: FC = () => {
 
   const handleSetModel = (newModel: ModelType) => {
     setModel(newModel);
-    if (['shirt', 'skirt', 'jacket'].includes(newModel)) {
-      setModelUrl(`https://firebasestorage.googleapis.com/v0/b/genkit-llm-tools.appspot.com/o/styleverse%2F${newModel}.glb?alt=media`);
-    } else {
-      setModelUrl(null);
-    }
+    // When a built-in model is selected, clear the modelUrl
+    // The 'jacket' model will now rely on the user uploading a file.
+    setModelUrl(null);
   };
 
   return (

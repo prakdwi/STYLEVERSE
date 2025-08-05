@@ -4,18 +4,16 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Box, Circle, Cone, Upload, ToyBrick, Wand2, GitCommit } from 'lucide-react';
+import { Box, Circle, Upload, Wand2, GitCommit } from 'lucide-react';
 import type { ModelType } from '@/app/page';
 import { generateStyle } from '@/app/actions';
 import { useToast } from '@/hooks/use-toast';
 import { Progress } from './ui/progress';
 
 // Helper for shirt/skirt/jacket icons
-const ClothingIcon = ({ type }: { type: 'shirt' | 'skirt' | 'jacket' }) => {
+const ClothingIcon = ({ type }: { type: 'jacket' }) => {
     const SvgIcon = () => {
       switch (type) {
-        case 'shirt': return <path d="M12 2l-7 4v6h14V6l-7-4zM5 12v6h14v-6H5z"/>;
-        case 'skirt': return <path d="M5 4l7 3 7-3v4H5V4zm0 6l7 3 7-3v8H5v-8z"/>;
         case 'jacket': return <path d="M12 2L4 6v8h16V6l-8-4zM4 14v6h5v-3h6v3h5v-6H4z"/>;
       }
     };
@@ -41,6 +39,8 @@ const ModelControls: FC<ModelControlsProps> = ({ setModel, setModelUrl, setGener
     if (event.target.files && event.target.files[0]) {
       const file = event.target.files[0];
       setModelUrl(URL.createObjectURL(file));
+      // Also set the model type to 'jacket' when a model is uploaded.
+      setModel('jacket');
     }
   };
   
@@ -111,11 +111,7 @@ const ModelControls: FC<ModelControlsProps> = ({ setModel, setModelUrl, setGener
             <div className="grid grid-cols-2 gap-2">
               <Button variant="outline" className="text-lg border-primary text-primary hover:bg-primary hover:text-white" onClick={() => setModel('cube')}><Box className="mr-2"/>Cube</Button>
               <Button variant="outline" className="text-lg border-primary text-primary hover:bg-primary hover:text-white" onClick={() => setModel('sphere')}><Circle className="mr-2"/>Sphere</Button>
-              <Button variant="outline" className="text-lg border-primary text-primary hover:bg-primary hover:text-white" onClick={() => setModel('torus')}><ToyBrick className="mr-2"/>Torus</Button>
-              <Button variant="outline" className="text-lg border-primary text-primary hover:bg-primary hover:text-white" onClick={() => setModel('cone')}><Cone className="mr-2"/>Cone</Button>
               <Button variant="outline" className="text-lg border-primary text-primary hover:bg-primary hover:text-white" onClick={() => setModel('knot')}><GitCommit className="mr-2"/>Knot</Button>
-              <Button variant="outline" className="text-lg border-primary text-primary hover:bg-primary hover:text-white" onClick={() => setModel('shirt')}><ClothingIcon type="shirt" />Shirt</Button>
-              <Button variant="outline" className="text-lg border-primary text-primary hover:bg-primary hover:text-white" onClick={() => setModel('skirt')}><ClothingIcon type="skirt" />Skirt</Button>
               <Button variant="outline" className="text-lg border-primary text-primary hover:bg-primary hover:text-white" onClick={() => setModel('jacket')}><ClothingIcon type="jacket" />Jacket</Button>
             </div>
             <input type="file" id="model-upload" className="hidden" accept=".obj,.glb,.gltf" onChange={handleModelUpload} />
