@@ -15,8 +15,8 @@ const Home: FC = () => {
   const [material, setMaterial] = React.useState<MaterialType>('matte');
   const [lightIntensity, setLightIntensity] = React.useState(1.5);
   const [generatedTexture, setGeneratedTexture] = React.useState<string | null>(null);
-  const [backgroundColor, setBackgroundColor] = React.useState('#0F0F1C');
-  const [showGrid, setShowGrid] = React.useState(false);
+  const [fogColor, setFogColor] = React.useState('#0F0F1C');
+  const [fogDensity, setFogDensity] = React.useState(0.05);
 
   const captureSnapshot = () => {
     const event = new CustomEvent('snapshot');
@@ -54,7 +54,7 @@ const Home: FC = () => {
                 <ModelControls setModel={handleSetModel} setModelUrl={setModelUrl} setGeneratedTexture={setGeneratedTexture} />
               </aside>
               <main className="flex-1 relative">
-                <ThreeScene model={model} modelUrl={modelUrl} material={material} lightIntensity={lightIntensity} generatedTexture={generatedTexture} backgroundColor={backgroundColor} showGrid={showGrid} />
+                <ThreeScene model={model} modelUrl={modelUrl} material={material} lightIntensity={lightIntensity} generatedTexture={generatedTexture} fogColor={fogColor} fogDensity={fogDensity} />
               </main>
               <aside className="relative w-72 h-full overflow-y-auto p-4 border-l border-white/10 bg-[#141424] tv-screen">
                 <CustomizationControls
@@ -62,18 +62,13 @@ const Home: FC = () => {
                   material={material}
                   setLightIntensity={setLightIntensity}
                   lightIntensity={lightIntensity}
-                  backgroundColor={backgroundColor}
-                  setBackgroundColor={setBackgroundColor}
-                  showGrid={showGrid}
-                  setShowGrid={setShowGrid}
+                  fogColor={fogColor}
+                  setFogColor={setFogColor}
+                  fogDensity={fogDensity}
+                  setFogDensity={setFogDensity}
                 />
               </aside>
             </div>
-          </div>
-
-          {/* TV Frame Details */}
-          <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 flex items-center gap-4">
-            <div className="w-24 h-4 bg-gray-600 rounded-full opacity-20"></div>
           </div>
         </div>
       </div>

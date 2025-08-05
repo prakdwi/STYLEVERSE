@@ -13,11 +13,11 @@ interface ThreeSceneProps {
   material: MaterialType;
   lightIntensity: number;
   generatedTexture: string | null;
-  backgroundColor: string;
-  showGrid: boolean;
+  fogColor: string;
+  fogDensity: number;
 }
 
-const ThreeScene: FC<ThreeSceneProps> = ({ model, modelUrl, material, lightIntensity, generatedTexture, backgroundColor, showGrid }) => {
+const ThreeScene: FC<ThreeSceneProps> = ({ model, modelUrl, material, lightIntensity, generatedTexture, fogColor, fogDensity }) => {
   const mountRef = useRef<HTMLDivElement>(null);
   const sceneRef = useRef<THREE.Scene | null>(null);
   const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
@@ -25,7 +25,6 @@ const ThreeScene: FC<ThreeSceneProps> = ({ model, modelUrl, material, lightInten
   const meshRef = useRef<THREE.Mesh | THREE.Object3D | null>(null);
   const lightRef = useRef<THREE.DirectionalLight | null>(null);
   const controlsRef = useRef<OrbitControls | null>(null);
-  const gridRef = useRef<THREE.GridHelper | null>(null);
   const requestRef = useRef<number>();
 
   const animate = () => {
@@ -46,6 +45,7 @@ const ThreeScene: FC<ThreeSceneProps> = ({ model, modelUrl, material, lightInten
     // Scene
     const scene = new THREE.Scene();
     scene.background = new THREE.Color('#0F0F1C');
+    scene.fog = new THREE.FogExp2(0x0F0F1C, 0.05);
     sceneRef.current = scene;
 
     // Camera
@@ -72,12 +72,6 @@ const ThreeScene: FC<ThreeSceneProps> = ({ model, modelUrl, material, lightInten
     directionalLight.position.set(5, 5, 5);
     scene.add(directionalLight);
     lightRef.current = directionalLight;
-
-    // Grid Helper
-    const gridHelper = new THREE.GridHelper(10, 10);
-    gridHelper.visible = false;
-    scene.add(gridHelper);
-    gridRef.current = gridHelper;
 
     // Initial Object
     const geometry = new THREE.BoxGeometry(2, 2, 2);
@@ -131,19 +125,13 @@ const ThreeScene: FC<ThreeSceneProps> = ({ model, modelUrl, material, lightInten
     }
   }, [lightIntensity]);
 
-  // Update background color
+  // Update fog
   useEffect(() => {
-    if (sceneRef.current) {
-      sceneRef.current.background = new THREE.Color(backgroundColor);
+    if (sceneRef.current && sceneRef.current.fog) {
+      (sceneRef.current.fog as THREE.FogExp2).color.set(fogColor);
+      (sceneRef.current.fog as THREE.FogExp2).density = fogDensity;
     }
-  }, [backgroundColor]);
-  
-  // Update grid visibility
-  useEffect(() => {
-    if (gridRef.current) {
-      gridRef.current.visible = showGrid;
-    }
-  }, [showGrid]);
+  }, [fogColor, fogDensity]);
 
   const applyMaterial = (object: THREE.Object3D, newMaterial: THREE.Material) => {
     if (object instanceof THREE.Mesh) {

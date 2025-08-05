@@ -9,9 +9,8 @@ import {
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Slider } from '@/components/ui/slider';
-import { Palette, Sun, Grid } from 'lucide-react';
+import { Cloud, Palette, Sun } from 'lucide-react';
 import type { MaterialType } from '@/app/page';
-import { Switch } from './ui/switch';
 import { Input } from './ui/input';
 
 interface CustomizationControlsProps {
@@ -19,10 +18,10 @@ interface CustomizationControlsProps {
   setMaterial: Dispatch<SetStateAction<MaterialType>>;
   lightIntensity: number;
   setLightIntensity: Dispatch<SetStateAction<number>>;
-  backgroundColor: string;
-  setBackgroundColor: Dispatch<SetStateAction<string>>;
-  showGrid: boolean;
-  setShowGrid: Dispatch<SetStateAction<boolean>>;
+  fogColor: string;
+  setFogColor: Dispatch<SetStateAction<string>>;
+  fogDensity: number;
+  setFogDensity: Dispatch<SetStateAction<number>>;
 }
 
 const CustomizationControls: FC<CustomizationControlsProps> = ({
@@ -30,10 +29,10 @@ const CustomizationControls: FC<CustomizationControlsProps> = ({
   setMaterial,
   lightIntensity,
   setLightIntensity,
-  backgroundColor,
-  setBackgroundColor,
-  showGrid,
-  setShowGrid,
+  fogColor,
+  setFogColor,
+  fogDensity,
+  setFogDensity,
 }) => {
   return (
     <Accordion type="multiple" defaultValue={['environment', 'material']} className="w-full text-white">
@@ -54,23 +53,26 @@ const CustomizationControls: FC<CustomizationControlsProps> = ({
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="background-color" className="text-primary text-lg">Background Color</Label>
+            <Label htmlFor="fog-color" className="text-primary text-lg flex items-center">
+              <Cloud className="mr-2" /> Fog Color
+            </Label>
             <Input
-              id="background-color"
+              id="fog-color"
               type="color"
-              value={backgroundColor}
-              onChange={(e) => setBackgroundColor(e.target.value)}
+              value={fogColor}
+              onChange={(e) => setFogColor(e.target.value)}
               className="w-full h-10 p-1"
             />
           </div>
-          <div className="flex items-center justify-between">
-            <Label htmlFor="show-grid" className="text-primary text-lg flex items-center">
-              <Grid className="mr-2" /> Show Grid
-            </Label>
-            <Switch
-              id="show-grid"
-              checked={showGrid}
-              onCheckedChange={setShowGrid}
+          <div className="space-y-2">
+            <Label htmlFor="fog-density" className="text-primary text-lg">Fog Density</Label>
+            <Slider
+              id="fog-density"
+              min={0}
+              max={0.5}
+              step={0.01}
+              value={[fogDensity]}
+              onValueChange={(value) => setFogDensity(value[0])}
             />
           </div>
         </AccordionContent>
