@@ -4,22 +4,11 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Box, Circle, Upload, Paintbrush, GitCommit } from 'lucide-react';
+import { Box, Circle, Upload, Paintbrush, GitCommit, Shirt } from 'lucide-react';
 import type { ModelType } from '@/app/page';
 import { generateStyle } from '@/app/actions';
 import { useToast } from '@/hooks/use-toast';
 import { Progress } from './ui/progress';
-
-// Helper for shirt/skirt/jacket icons
-const ClothingIcon = ({ type }: { type: 'jacket' }) => {
-    const SvgIcon = () => {
-      switch (type) {
-        case 'jacket': return <path d="M12 2L4 6v8h16V6l-8-4zM4 14v6h5v-3h6v3h5v-6H4z"/>;
-      }
-    };
-    return <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2"><SvgIcon /></svg>
-};
-
 
 interface ModelControlsProps {
   setModel: (model: ModelType) => void;
@@ -112,7 +101,7 @@ const ModelControls: FC<ModelControlsProps> = ({ setModel, setModelUrl, setGener
               <Button variant="outline" className="text-lg font-bold border-primary text-black hover:bg-primary hover:text-white" onClick={() => setModel('cube')}><Box className="mr-2"/>Cube</Button>
               <Button variant="outline" className="text-lg font-bold border-primary text-black hover:bg-primary hover:text-white" onClick={() => setModel('sphere')}><Circle className="mr-2"/>Sphere</Button>
               <Button variant="outline" className="text-lg font-bold border-primary text-black hover:bg-primary hover:text-white" onClick={() => setModel('knot')}><GitCommit className="mr-2"/>Knot</Button>
-              <Button variant="outline" className="text-lg font-bold border-primary text-black hover:bg-primary hover:text-white" onClick={() => setModel('jacket')}><ClothingIcon type="jacket" />Jacket</Button>
+              <Button variant="outline" className="text-lg font-bold border-primary text-black hover:bg-primary hover:text-white" onClick={() => setModel('jacket')}><Shirt className="mr-2" />Jacket</Button>
             </div>
             <input type="file" id="model-upload" className="hidden" accept=".obj,.glb,.gltf" onChange={handleModelUpload} />
             <button className="w-full btn-gradient" onClick={() => document.getElementById('model-upload')?.click()}>
