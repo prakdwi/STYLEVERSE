@@ -28,9 +28,14 @@ const Home: FC = () => {
 
   const handleSetModel = (newModel: ModelType) => {
     setModel(newModel);
-    // When a built-in model is selected, clear the modelUrl
-    // The 'jacket' model will now rely on the user uploading a file.
-    setModelUrl(null);
+    if (newModel === 'jacket') {
+      // Set a default model URL for the jacket.
+      // You can replace this URL with your own self-hosted model.
+      setModelUrl('https://firebasestorage.googleapis.com/v0/b/genkit-llm-7669a.appspot.com/o/7a760c6c-a43c-43f1-8f2c-55cbbc433871.glb?alt=media&token=c191a32a-4a81-4357-93e5-b82772528c89');
+    } else {
+      // For other models, clear the URL to use the built-in geometry.
+      setModelUrl(null);
+    }
   };
 
   return (

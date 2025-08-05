@@ -237,33 +237,34 @@ const ThreeScene: FC<ThreeSceneProps> = ({ model, modelUrl, material, lightInten
     if (modelUrl) {
       loadModel(modelUrl);
     } else {
-      if (meshRef.current && sceneRef.current) {
-        if(model !== 'jacket') sceneRef.current.remove(meshRef.current);
-        
-        if (model === 'jacket' && meshRef.current.type !== 'Group') {
-             // If jacket is selected but no model is loaded (or current mesh is not a loaded model),
-             // you might want to show a placeholder or remove the old mesh.
-             if(meshRef.current) sceneRef.current.remove(meshRef.current);
-             meshRef.current = null; // Awaiting upload
-        } else if (model !== 'jacket') {
-            let newGeometry: THREE.BufferGeometry;
-            switch (model) {
-              case 'sphere':
-                newGeometry = new THREE.SphereGeometry(1.5, 32, 16);
-                break;
-              case 'knot':
-                newGeometry = new THREE.TorusKnotGeometry( 1, 0.4, 100, 16 );
-                break;
-              case 'cube':
-              default:
-                newGeometry = new THREE.BoxGeometry(2, 2, 2);
-                break;
-            }
-            const currentMaterial = (meshRef.current as any)?.material || new THREE.MeshStandardMaterial({ color: 0x00F5D4 });
-            const newMesh = new THREE.Mesh(newGeometry, currentMaterial);
-            sceneRef.current.add(newMesh);
-            meshRef.current = newMesh;
+      const scene = sceneRef.current;
+      if (scene && meshRef.current) {
+        scene.remove(meshRef.current);
+      }
+  
+      let newGeometry: THREE.BufferGeometry;
+      switch (model) {
+        case 'sphere':
+          newGeometry = new THREE.SphereGeometry(1.5, 32, 16);
+          break;
+        case 'knot':
+          newGeometry = new THREE.TorusKnotGeometry(1, 0.4, 100, 16);
+          break;
+        case 'cube':
+        default:
+          newGeometry = new THREE.BoxGeometry(2, 2, 2);
+          break;
+      }
+
+      if (model !== 'jacket') {
+        const currentMaterial = (meshRef.current as any)?.material || new THREE.MeshStandardMaterial({ color: 0x00F5D4 });
+        const newMesh = new THREE.Mesh(newGeometry, currentMaterial);
+        if (scene) {
+          scene.add(newMesh);
         }
+        meshRef.current = newMesh;
+      } else {
+        meshRef.current = null;
       }
     }
   }, [model, modelUrl]);
