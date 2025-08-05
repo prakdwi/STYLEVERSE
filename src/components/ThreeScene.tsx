@@ -149,7 +149,7 @@ const ThreeScene: FC<ThreeSceneProps> = ({ model, modelUrl, material, lightInten
 
   // Update graininess
   useEffect(() => {
-    if (filmPassRef.current) {
+    if (filmPassRef.current && filmPassRef.current.uniforms['nIntensity']) {
       filmPassRef.current.uniforms['nIntensity'].value = graininess;
     }
   }, [graininess]);
