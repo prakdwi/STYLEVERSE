@@ -121,8 +121,8 @@ const ModelControls: FC<ModelControlsProps> = ({ setModel, setModelUrl, setGener
             
             <CardDescription>Or select a predefined style:</CardDescription>
             <div className="grid grid-cols-2 gap-2">
-                <Button variant='outline' onClick={() => selectPredefinedStyle('https://placehold.co/300x200.png')} data-ai-hint="synthwave sunset">Synthwave</Button>
-                <Button variant='outline' onClick={() => selectPredefinedStyle('https://placehold.co/300x200.png')} data-ai-hint="starry night">Van Gogh</Button>
+                <Button variant={styleImageUrl === 'https://placehold.co/300x200.png?text=Synthwave' ? 'default' : 'outline'} onClick={() => selectPredefinedStyle('https://placehold.co/300x200.png?text=Synthwave')} data-ai-hint="synthwave sunset">Synthwave</Button>
+                <Button variant={styleImageUrl === 'https://placehold.co/300x200.png?text=Van+Gogh' ? 'default' : 'outline'} onClick={() => selectPredefinedStyle('https://placehold.co/300x200.png?text=Van+Gogh')} data-ai-hint="starry night">Van Gogh</Button>
             </div>
 
             {uploadedImagePreview && <img src={uploadedImagePreview} alt="Style preview" className="rounded-md object-cover w-full h-32" />}
