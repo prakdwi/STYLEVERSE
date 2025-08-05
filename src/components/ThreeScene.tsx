@@ -150,17 +150,17 @@ const ThreeScene: FC<ThreeSceneProps> = ({ model, modelUrl, material, lightInten
                 newMaterial = new THREE.MeshBasicMaterial({ color: 0xFF4D6D, wireframe: true });
                 break;
             case 'cotton':
-                newMaterial = new THREE.MeshStandardMaterial({ ...materialProps, metalness: 0.0, roughness: 0.9 });
+                newMaterial = new THREE.MeshStandardMaterial({ ...materialProps, metalness: 0.0, roughness: 0.8 });
                 break;
             case 'silk':
-                newMaterial = new THREE.MeshStandardMaterial({ ...materialProps, metalness: 0.1, roughness: 0.1 });
+                newMaterial = new THREE.MeshStandardMaterial({ ...materialProps, metalness: 0.0, roughness: 0.2, clearcoat: 0.5 });
                 break;
             case 'denim':
-                newMaterial = new THREE.MeshStandardMaterial({ ...materialProps, metalness: 0.0, roughness: 0.8 });
+                newMaterial = new THREE.MeshStandardMaterial({ ...materialProps, metalness: 0.1, roughness: 0.7 });
                 break;
             case 'matte':
             default:
-                newMaterial = new THREE.MeshStandardMaterial({ ...materialProps, metalness: 0.1, roughness: 0.8 });
+                newMaterial = new THREE.MeshStandardMaterial({ ...materialProps, metalness: 0.1, roughness: 0.9 });
                 break;
         }
         applyMaterial(meshRef.current, newMaterial);
@@ -211,17 +211,17 @@ const ThreeScene: FC<ThreeSceneProps> = ({ model, modelUrl, material, lightInten
                 newMaterial = new THREE.MeshBasicMaterial({ color: 0xFF4D6D, wireframe: true });
                 break;
             case 'cotton':
-                newMaterial = new THREE.MeshStandardMaterial({ ...materialProps, metalness: 0.0, roughness: 0.9 });
+                newMaterial = new THREE.MeshStandardMaterial({ ...materialProps, metalness: 0.0, roughness: 0.8 });
                 break;
             case 'silk':
-                newMaterial = new THREE.MeshStandardMaterial({ ...materialProps, metalness: 0.1, roughness: 0.1 });
+                newMaterial = new THREE.MeshStandardMaterial({ ...materialProps, metalness: 0.0, roughness: 0.2, clearcoat: 0.5 });
                 break;
             case 'denim':
-                newMaterial = new THREE.MeshStandardMaterial({ ...materialProps, metalness: 0.0, roughness: 0.8 });
+                newMaterial = new THREE.MeshStandardMaterial({ ...materialProps, metalness: 0.1, roughness: 0.7 });
                 break;
             case 'matte':
             default:
-                newMaterial = new THREE.MeshStandardMaterial({ ...materialProps, metalness: 0.1, roughness: 0.8 });
+                newMaterial = new THREE.MeshStandardMaterial({ ...materialProps, metalness: 0.1, roughness: 0.9 });
                 break;
         }
         applyMaterial(meshRef.current, newMaterial);
