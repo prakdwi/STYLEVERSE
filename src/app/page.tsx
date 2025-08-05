@@ -15,6 +15,8 @@ const Home: FC = () => {
   const [material, setMaterial] = React.useState<MaterialType>('matte');
   const [lightIntensity, setLightIntensity] = React.useState(1.5);
   const [generatedTexture, setGeneratedTexture] = React.useState<string | null>(null);
+  const [backgroundColor, setBackgroundColor] = React.useState('#0F0F1C');
+  const [showGrid, setShowGrid] = React.useState(false);
 
   const captureSnapshot = () => {
     const event = new CustomEvent('snapshot');
@@ -52,7 +54,7 @@ const Home: FC = () => {
                 <ModelControls setModel={handleSetModel} setModelUrl={setModelUrl} setGeneratedTexture={setGeneratedTexture} />
               </aside>
               <main className="flex-1 relative">
-                <ThreeScene model={model} modelUrl={modelUrl} material={material} lightIntensity={lightIntensity} generatedTexture={generatedTexture} />
+                <ThreeScene model={model} modelUrl={modelUrl} material={material} lightIntensity={lightIntensity} generatedTexture={generatedTexture} backgroundColor={backgroundColor} showGrid={showGrid} />
               </main>
               <aside className="relative w-72 h-full overflow-y-auto p-4 border-l border-white/10 bg-[#141424] tv-screen">
                 <CustomizationControls
@@ -60,6 +62,10 @@ const Home: FC = () => {
                   material={material}
                   setLightIntensity={setLightIntensity}
                   lightIntensity={lightIntensity}
+                  backgroundColor={backgroundColor}
+                  setBackgroundColor={setBackgroundColor}
+                  showGrid={showGrid}
+                  setShowGrid={setShowGrid}
                 />
               </aside>
             </div>

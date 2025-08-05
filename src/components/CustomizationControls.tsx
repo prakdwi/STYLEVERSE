@@ -9,14 +9,20 @@ import {
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Slider } from '@/components/ui/slider';
-import { Palette, Sun } from 'lucide-react';
+import { Palette, Sun, Grid } from 'lucide-react';
 import type { MaterialType } from '@/app/page';
+import { Switch } from './ui/switch';
+import { Input } from './ui/input';
 
 interface CustomizationControlsProps {
   material: MaterialType;
   setMaterial: Dispatch<SetStateAction<MaterialType>>;
   lightIntensity: number;
   setLightIntensity: Dispatch<SetStateAction<number>>;
+  backgroundColor: string;
+  setBackgroundColor: Dispatch<SetStateAction<string>>;
+  showGrid: boolean;
+  setShowGrid: Dispatch<SetStateAction<boolean>>;
 }
 
 const CustomizationControls: FC<CustomizationControlsProps> = ({
@@ -24,6 +30,10 @@ const CustomizationControls: FC<CustomizationControlsProps> = ({
   setMaterial,
   lightIntensity,
   setLightIntensity,
+  backgroundColor,
+  setBackgroundColor,
+  showGrid,
+  setShowGrid,
 }) => {
   return (
     <Accordion type="multiple" defaultValue={['environment', 'material']} className="w-full text-white">
@@ -41,6 +51,26 @@ const CustomizationControls: FC<CustomizationControlsProps> = ({
               step={0.1}
               value={[lightIntensity]}
               onValueChange={(value) => setLightIntensity(value[0])}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="background-color" className="text-primary text-lg">Background Color</Label>
+            <Input
+              id="background-color"
+              type="color"
+              value={backgroundColor}
+              onChange={(e) => setBackgroundColor(e.target.value)}
+              className="w-full h-10 p-1"
+            />
+          </div>
+          <div className="flex items-center justify-between">
+            <Label htmlFor="show-grid" className="text-primary text-lg flex items-center">
+              <Grid className="mr-2" /> Show Grid
+            </Label>
+            <Switch
+              id="show-grid"
+              checked={showGrid}
+              onCheckedChange={setShowGrid}
             />
           </div>
         </AccordionContent>

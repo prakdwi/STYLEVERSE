@@ -13,9 +13,11 @@ interface ThreeSceneProps {
   material: MaterialType;
   lightIntensity: number;
   generatedTexture: string | null;
+  backgroundColor: string;
+  showGrid: boolean;
 }
 
-const ThreeScene: FC<ThreeSceneProps> = ({ model, modelUrl, material, lightIntensity, generatedTexture }) => {
+const ThreeScene: FC<ThreeSceneProps> = ({ model, modelUrl, material, lightIntensity, generatedTexture, backgroundColor, showGrid }) => {
   const mountRef = useRef<HTMLDivElement>(null);
   const sceneRef = useRef<THREE.Scene | null>(null);
   const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
@@ -23,6 +25,7 @@ const ThreeScene: FC<ThreeSceneProps> = ({ model, modelUrl, material, lightInten
   const meshRef = useRef<THREE.Mesh | THREE.Object3D | null>(null);
   const lightRef = useRef<THREE.DirectionalLight | null>(null);
   const controlsRef = useRef<OrbitControls | null>(null);
+  const gridRef = useRef<THREE.GridHelper | null>(null);
   const requestRef = useRef<number>();
 
   const animate = () => {
@@ -69,6 +72,12 @@ const ThreeScene: FC<ThreeSceneProps> = ({ model, modelUrl, material, lightInten
     directionalLight.position.set(5, 5, 5);
     scene.add(directionalLight);
     lightRef.current = directionalLight;
+
+    // Grid Helper
+    const gridHelper = new THREE.GridHelper(10, 10);
+    gridHelper.visible = false;
+    scene.add(gridHelper);
+    gridRef.current = gridHelper;
 
     // Initial Object
     const geometry = new THREE.BoxGeometry(2, 2, 2);
@@ -121,7 +130,21 @@ const ThreeScene: FC<ThreeSceneProps> = ({ model, modelUrl, material, lightInten
       lightRef.current.intensity = lightIntensity;
     }
   }, [lightIntensity]);
+
+  // Update background color
+  useEffect(() => {
+    if (sceneRef.current) {
+      sceneRef.current.background = new THREE.Color(backgroundColor);
+    }
+  }, [backgroundColor]);
   
+  // Update grid visibility
+  useEffect(() => {
+    if (gridRef.current) {
+      gridRef.current.visible = showGrid;
+    }
+  }, [showGrid]);
+
   const applyMaterial = (object: THREE.Object3D, newMaterial: THREE.Material) => {
     if (object instanceof THREE.Mesh) {
       object.material = newMaterial;
