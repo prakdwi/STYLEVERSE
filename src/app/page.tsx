@@ -11,7 +11,6 @@ export type ModelType = 'cube' | 'sphere' | 'knot' | 'pyramid';
 export type ModelInfo = {
   type: 'url',
   url: string;
-  fileType: 'gltf' | 'obj';
 } | {
   type: 'shape',
   shape: ModelType
@@ -19,7 +18,7 @@ export type ModelInfo = {
 
 
 const Home: FC = () => {
-  const [modelInfo, setModelInfo] = React.useState<ModelInfo>({type: 'shape', shape: 'cube'});
+  const [modelInfo, setModelInfo] = React.useState<ModelInfo>({type: 'url', url: 'https://firebasestorage.googleapis.com/v0/b/genkit-llm-7669a.appspot.com/o/jacket.glb?alt=media&token=4b3a4a74-95a2-4712-823d-a7fd7a5a8f47'});
   const [material, setMaterial] = React.useState<MaterialType>('matte');
   const [lightIntensity, setLightIntensity] = React.useState(1.5);
   const [generatedTexture, setGeneratedTexture] = React.useState<string | null>(null);

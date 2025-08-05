@@ -168,7 +168,7 @@ const ThreeScene: FC<ThreeSceneProps> = ({ modelInfo, material, lightIntensity, 
   }, [material, generatedTexture]);
 
 
-  const loadModel = async (url: string, fileType: 'gltf' | 'obj') => {
+  const loadModel = (url: string) => {
     const scene = sceneRef.current;
     if (!scene) return;
   
@@ -176,8 +176,9 @@ const ThreeScene: FC<ThreeSceneProps> = ({ modelInfo, material, lightIntensity, 
       scene.remove(meshRef.current);
     }
   
-    const onModelLoaded = (object: THREE.Group | THREE.Object3D) => {
-        const model = object.type === 'Group' ? object : object;
+    const loader = new GLTFLoader();
+    loader.load(url, (gltf) => {
+        const model = gltf.scene;
         
         const box = new THREE.Box3().setFromObject(model);
         const center = box.getCenter(new THREE.Vector3());
@@ -225,26 +226,14 @@ const ThreeScene: FC<ThreeSceneProps> = ({ modelInfo, material, lightIntensity, 
                 break;
         }
         applyMaterial(meshRef.current, newMaterial);
-    };
-    
-    if (fileType === 'obj') {
-        const OBJLoaderModule = await import('three-obj-loader');
-        const OBJLoader = OBJLoaderModule.default(THREE);
-        const loader = new (OBJLoader as any)();
-        loader.load(url, onModelLoaded, undefined, (error: any) => {
-            console.error('An error happened while loading the OBJ model:', error);
-        });
-    } else { // Assume glb/gltf
-        const loader = new GLTFLoader();
-        loader.load(url, (gltf) => onModelLoaded(gltf.scene), undefined, (error) => {
-            console.error('An error happened while loading the GLB/GLTF model:', error);
-        });
-    }
+    }, undefined, (error) => {
+        console.error('An error happened while loading the model:', error);
+    });
   };
 
   useEffect(() => {
     if (modelInfo.type === 'url') {
-      loadModel(modelInfo.url, modelInfo.fileType);
+      loadModel(modelInfo.url);
     } else {
       const scene = sceneRef.current;
       if (scene && meshRef.current) {

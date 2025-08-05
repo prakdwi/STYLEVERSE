@@ -27,12 +27,12 @@ const CustomizationControls: FC<CustomizationControlsProps> = ({
 }) => {
   return (
     <Accordion type="multiple" defaultValue={['environment', 'material']} className="w-full text-white">
-      <AccordionItem value="environment">
+      <AccordionItem value="environment" className="border-b border-white/10">
         <AccordionTrigger className="text-xl">
           <Sun className="mr-2 text-primary"/> Environment
         </AccordionTrigger>
         <AccordionContent className="space-y-4 p-2">
-          <div className="space-y-2 pb-4">
+          <div className="space-y-2">
             <Label htmlFor="light-intensity" className="text-primary text-lg">Light Intensity</Label>
             <Slider
               id="light-intensity"
@@ -45,7 +45,7 @@ const CustomizationControls: FC<CustomizationControlsProps> = ({
           </div>
         </AccordionContent>
       </AccordionItem>
-      <AccordionItem value="material" className="pt-8">
+      <AccordionItem value="material">
         <AccordionTrigger className="text-xl">
           <Palette className="mr-2 text-primary"/> Material
         </AccordionTrigger>
