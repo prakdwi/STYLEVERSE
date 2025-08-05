@@ -149,6 +149,15 @@ const ThreeScene: FC<ThreeSceneProps> = ({ model, modelUrl, material, lightInten
             case 'wireframe':
                 newMaterial = new THREE.MeshBasicMaterial({ color: 0xFF4D6D, wireframe: true });
                 break;
+            case 'cotton':
+                newMaterial = new THREE.MeshStandardMaterial({ ...materialProps, metalness: 0.0, roughness: 0.9 });
+                break;
+            case 'silk':
+                newMaterial = new THREE.MeshStandardMaterial({ ...materialProps, metalness: 0.1, roughness: 0.1 });
+                break;
+            case 'denim':
+                newMaterial = new THREE.MeshStandardMaterial({ ...materialProps, metalness: 0.0, roughness: 0.8 });
+                break;
             case 'matte':
             default:
                 newMaterial = new THREE.MeshStandardMaterial({ ...materialProps, metalness: 0.1, roughness: 0.8 });
@@ -200,6 +209,15 @@ const ThreeScene: FC<ThreeSceneProps> = ({ model, modelUrl, material, lightInten
                 break;
             case 'wireframe':
                 newMaterial = new THREE.MeshBasicMaterial({ color: 0xFF4D6D, wireframe: true });
+                break;
+            case 'cotton':
+                newMaterial = new THREE.MeshStandardMaterial({ ...materialProps, metalness: 0.0, roughness: 0.9 });
+                break;
+            case 'silk':
+                newMaterial = new THREE.MeshStandardMaterial({ ...materialProps, metalness: 0.1, roughness: 0.1 });
+                break;
+            case 'denim':
+                newMaterial = new THREE.MeshStandardMaterial({ ...materialProps, metalness: 0.0, roughness: 0.8 });
                 break;
             case 'matte':
             default:

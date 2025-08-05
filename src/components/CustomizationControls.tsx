@@ -63,6 +63,18 @@ const CustomizationControls: FC<CustomizationControlsProps> = ({
               <RadioGroupItem value="wireframe" id="wireframe" />
               <Label htmlFor="wireframe" className="hover:text-primary">Wireframe</Label>
             </div>
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="cotton" id="cotton" />
+              <Label htmlFor="cotton" className="hover:text-primary">Cotton</Label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="silk" id="silk" />
+              <Label htmlFor="silk" className="hover:text-primary">Silk</Label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="denim" id="denim" />
+              <Label htmlFor="denim" className="hover:text-primary">Denim</Label>
+            </div>
           </RadioGroup>
         </AccordionContent>
       </AccordionItem>

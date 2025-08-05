@@ -6,7 +6,7 @@ import ModelControls from '@/components/ModelControls';
 import CustomizationControls from '@/components/CustomizationControls';
 import ThreeScene from '@/components/ThreeScene';
 
-export type MaterialType = 'matte' | 'metallic' | 'wireframe';
+export type MaterialType = 'matte' | 'metallic' | 'wireframe' | 'cotton' | 'silk' | 'denim';
 export type ModelType = 'cube' | 'sphere' | 'torus';
 
 const Home: FC = () => {
