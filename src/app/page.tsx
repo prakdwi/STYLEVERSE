@@ -19,7 +19,7 @@ export type ModelInfo = {
 
 
 const Home: FC = () => {
-  const [modelInfo, setModelInfo] = React.useState<ModelInfo>({type: 'url', url: 'https://storage.googleapis.com/studio-prod-assets/Flight_Anatomy_of_a_Spacesuit.glb', fileType: 'glb'});
+  const [modelInfo, setModelInfo] = React.useState<ModelInfo>({type: 'url', url: 'https://threejs.org/examples/models/gltf/DamagedHelmet/glTF/DamagedHelmet.gltf', fileType: 'glb'});
   const [material, setMaterial] = React.useState<MaterialType>('matte');
   const [lightIntensity, setLightIntensity] = React.useState(1.5);
   const [generatedTexture, setGeneratedTexture] = React.useState<string | null>(null);
