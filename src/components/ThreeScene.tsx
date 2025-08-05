@@ -82,7 +82,7 @@ const ThreeScene: FC<ThreeSceneProps> = ({ model, modelUrl, material, lightInten
     const renderPass = new RenderPass(scene, camera);
     composer.addPass(renderPass);
 
-    const filmPass = new FilmPass(0.2, false);
+    const filmPass = new FilmPass(0.2, 0, 0, false);
     filmPassRef.current = filmPass;
     composer.addPass(filmPass);
     composerRef.current = composer;
