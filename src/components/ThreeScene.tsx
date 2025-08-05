@@ -4,9 +4,6 @@ import React, { useRef, useEffect } from 'react';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
-import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
-import { FilmPass } from 'three/examples/jsm/postprocessing/FilmPass.js';
 import type { ModelType, MaterialType } from '@/app/page';
 
 interface ThreeSceneProps {
@@ -15,17 +12,13 @@ interface ThreeSceneProps {
   material: MaterialType;
   lightIntensity: number;
   generatedTexture: string | null;
-  exposure: number;
-  graininess: number;
 }
 
-const ThreeScene: FC<ThreeSceneProps> = ({ model, modelUrl, material, lightIntensity, generatedTexture, exposure, graininess }) => {
+const ThreeScene: FC<ThreeSceneProps> = ({ model, modelUrl, material, lightIntensity, generatedTexture }) => {
   const mountRef = useRef<HTMLDivElement>(null);
   const sceneRef = useRef<THREE.Scene | null>(null);
   const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
-  const composerRef = useRef<EffectComposer | null>(null);
-  const filmPassRef = useRef<FilmPass | null>(null);
   const meshRef = useRef<THREE.Mesh | THREE.Object3D | null>(null);
   const lightRef = useRef<THREE.DirectionalLight | null>(null);
   const controlsRef = useRef<OrbitControls | null>(null);
@@ -36,8 +29,8 @@ const ThreeScene: FC<ThreeSceneProps> = ({ model, modelUrl, material, lightInten
     if (controlsRef.current) {
       controlsRef.current.update();
     }
-    if (composerRef.current) {
-      composerRef.current.render();
+    if (rendererRef.current && sceneRef.current && cameraRef.current) {
+      rendererRef.current.render(sceneRef.current, cameraRef.current);
     }
   };
 
@@ -60,7 +53,6 @@ const ThreeScene: FC<ThreeSceneProps> = ({ model, modelUrl, material, lightInten
     const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
     renderer.setSize(currentMount.clientWidth, currentMount.clientHeight);
     renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.toneMapping = THREE.ACESFilmicToneMapping;
     rendererRef.current = renderer;
     currentMount.appendChild(renderer.domElement);
     
@@ -77,16 +69,6 @@ const ThreeScene: FC<ThreeSceneProps> = ({ model, modelUrl, material, lightInten
     scene.add(directionalLight);
     lightRef.current = directionalLight;
 
-    // Post-processing
-    const composer = new EffectComposer(renderer);
-    const renderPass = new RenderPass(scene, camera);
-    composer.addPass(renderPass);
-
-    const filmPass = new FilmPass(0.2, 0, 0, false);
-    filmPassRef.current = filmPass;
-    composer.addPass(filmPass);
-    composerRef.current = composer;
-
     // Initial Object
     const geometry = new THREE.BoxGeometry(2, 2, 2);
     const initialMaterial = new THREE.MeshStandardMaterial({ color: 0x00F5D4 });
@@ -99,18 +81,17 @@ const ThreeScene: FC<ThreeSceneProps> = ({ model, modelUrl, material, lightInten
 
     // Resize handler
     const handleResize = () => {
-        if (currentMount && cameraRef.current && rendererRef.current && composerRef.current) {
+        if (currentMount && cameraRef.current && rendererRef.current) {
             cameraRef.current.aspect = currentMount.clientWidth / currentMount.clientHeight;
             cameraRef.current.updateProjectionMatrix();
             rendererRef.current.setSize(currentMount.clientWidth, currentMount.clientHeight);
-            composerRef.current.setSize(currentMount.clientWidth, currentMount.clientHeight);
         }
     };
     window.addEventListener('resize', handleResize);
 
     const takeSnapshot = () => {
         if(rendererRef.current && sceneRef.current && cameraRef.current){
-            composerRef.current?.render();
+            rendererRef.current.render(sceneRef.current, cameraRef.current);
             const dataURL = rendererRef.current.domElement.toDataURL('image/png');
             const link = document.createElement('a');
             link.download = 'snapshot.png';
@@ -139,20 +120,6 @@ const ThreeScene: FC<ThreeSceneProps> = ({ model, modelUrl, material, lightInten
       lightRef.current.intensity = lightIntensity;
     }
   }, [lightIntensity]);
-
-  // Update exposure
-  useEffect(() => {
-    if (rendererRef.current) {
-      rendererRef.current.toneMappingExposure = exposure;
-    }
-  }, [exposure]);
-
-  // Update graininess
-  useEffect(() => {
-    if (filmPassRef.current && filmPassRef.current.uniforms['nIntensity']) {
-      filmPassRef.current.uniforms['nIntensity'].value = graininess;
-    }
-  }, [graininess]);
 
   const applyMaterial = (object: THREE.Object3D, newMaterial: THREE.Material) => {
     if (object instanceof THREE.Mesh) {

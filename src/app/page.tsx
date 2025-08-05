@@ -15,8 +15,6 @@ const Home: FC = () => {
   const [material, setMaterial] = React.useState<MaterialType>('matte');
   const [lightIntensity, setLightIntensity] = React.useState(1.5);
   const [generatedTexture, setGeneratedTexture] = React.useState<string | null>(null);
-  const [exposure, setExposure] = React.useState(1);
-  const [graininess, setGraininess] = React.useState(0.2);
 
   const captureSnapshot = () => {
     const event = new CustomEvent('snapshot');
@@ -54,7 +52,7 @@ const Home: FC = () => {
                 <ModelControls setModel={handleSetModel} setModelUrl={setModelUrl} setGeneratedTexture={setGeneratedTexture} />
               </aside>
               <main className="flex-1 relative">
-                <ThreeScene model={model} modelUrl={modelUrl} material={material} lightIntensity={lightIntensity} generatedTexture={generatedTexture} exposure={exposure} graininess={graininess} />
+                <ThreeScene model={model} modelUrl={modelUrl} material={material} lightIntensity={lightIntensity} generatedTexture={generatedTexture} />
               </main>
               <aside className="relative w-72 h-full overflow-y-auto p-4 border-l border-white/10 bg-[#141424] tv-screen">
                 <CustomizationControls
@@ -62,10 +60,6 @@ const Home: FC = () => {
                   material={material}
                   setLightIntensity={setLightIntensity}
                   lightIntensity={lightIntensity}
-                  exposure={exposure}
-                  setExposure={setExposure}
-                  graininess={graininess}
-                  setGraininess={setGraininess}
                 />
               </aside>
             </div>
