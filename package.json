@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@genkit-ai/firebase": "^1.34.0",
-    "@genkit-ai/googleai": "^1.34.0",
+    "@genkit-ai/googleai": "^1.29.0",
     "@genkit-ai/next": "^1.34.0",
     "@opentelemetry/exporter-jaeger": "^1.24.1",
     "@hookform/resolvers": "^4.1.3",
