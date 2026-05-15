@@ -12,7 +12,7 @@ async function generateStyle(input: GenerateStyleInput) {
     const promptText = 'Analyze the style, colors, and patterns of the following image and generate a new, seamless texture that captures its artistic essence. The texture should be a creative interpretation of the style, not a direct copy of the image.';
   
     const { media } = await ai.generate({
-      model: 'googleai/gemini-2.0-flash-preview-image-generation',
+      model: 'googleai/gemini-2.0-flash'',
       prompt: [
         {text: promptText},
         {media: { url: input.styleImageDataUri }}
