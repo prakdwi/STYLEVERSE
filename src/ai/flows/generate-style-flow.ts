@@ -16,7 +16,7 @@ async function generateStyle(input: GenerateStyleInput) {
       model: googleAI.model('gemini-2.5-flash'),
       prompt: [
         {text: promptText},
-        {media: { url: input.styleImageDataUri }}
+        {media: { url: input.styleImageDataUri, contentType: 'image/jpeg' }}
       ],
       config: {
         responseModalities: ['TEXT', 'IMAGE'],
