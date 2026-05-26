@@ -10,7 +10,7 @@ import { GenerateStyleInputSchema, GenerateStyleOutputSchema, type GenerateStyle
 import { googleAI } from '@genkit-ai/google-genai';
 
 async function generateStyle(input: GenerateStyleInput) {
-    const promptText = 'Analyze the style, colors, and patterns of the following image. Respond with a JSON object containing: { "primaryColor": "#RRGGBB", "secondaryColor": "#RRGGBB", "pattern": "description of pattern", "intensity": 0-1 }';
+    const promptText = 'Analyze the style, colors, and patterns of the following image. Respond ONLY with a valid JSON object (no markdown, no code blocks): { "primaryColor": "#RRGGBB", "secondaryColor": "#RRGGBB", "pattern": "description", "intensity": 0.5 }';
   
     const { text: styleAnalysis } = await ai.generate({
       model: googleAI.model('gemini-2.5-flash'),
@@ -24,8 +24,18 @@ async function generateStyle(input: GenerateStyleInput) {
       throw new Error('Failed to analyze style.');
     }
     
-    // Parse the style analysis and generate a procedural texture canvas data URL
-    const styleData = JSON.parse(styleAnalysis);
+    // Parse the style analysis - handle potential markdown formatting
+    let styleData;
+    try {
+      // Try to extract JSON if it's wrapped in markdown code blocks
+      const jsonMatch = styleAnalysis.match(/\{[\s\S]*\}/);
+      const jsonStr = jsonMatch ? jsonMatch[0] : styleAnalysis;
+      styleData = JSON.parse(jsonStr);
+    } catch (error) {
+      throw new Error(`Failed to parse style data: ${error}`);
+    }
+    
+    // Generate a procedural texture canvas data URL
     const canvas = createProceduralTexture(styleData);
     const textureDataUri = canvas.toDataURL();
     
