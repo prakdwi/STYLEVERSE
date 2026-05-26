@@ -7,12 +7,11 @@
 
 import { ai } from '@/ai/genkit';
 import { GenerateStyleInputSchema, GenerateStyleOutputSchema, type GenerateStyleInput } from '@/ai/schemas';
-import { googleAI, vertexAI } from '@genkit-ai/google-genai';
+import { googleAI } from '@genkit-ai/google-genai';
 
 async function generateStyle(input: GenerateStyleInput) {
-    const promptText = 'Analyze the style, colors, and patterns of the following image and generate a new, seamless texture that captures its artistic essence. The texture should be a creative interpretation of the style, not a direct copy of the image.';
+    const promptText = 'Analyze the style, colors, and patterns of the following image. Respond with a JSON object containing: { "primaryColor": "#RRGGBB", "secondaryColor": "#RRGGBB", "pattern": "description of pattern", "intensity": 0-1 }';
   
-    // First, analyze the style with Gemini
     const { text: styleAnalysis } = await ai.generate({
       model: googleAI.model('gemini-2.5-flash'),
       prompt: [
@@ -25,19 +24,45 @@ async function generateStyle(input: GenerateStyleInput) {
       throw new Error('Failed to analyze style.');
     }
     
-    // Then generate image using Imagen based on the analysis
-    const { text: imageUrl } = await ai.generate({
-      model: vertexAI.model('imagen-3.0-generate-002'),
-      prompt: `Create a seamless texture based on this style description: ${styleAnalysis}`,
-    });
-
-    if (!imageUrl) {
-      throw new Error('Image generation failed to produce an image.');
-    }
+    // Parse the style analysis and generate a procedural texture canvas data URL
+    const styleData = JSON.parse(styleAnalysis);
+    const canvas = createProceduralTexture(styleData);
+    const textureDataUri = canvas.toDataURL();
     
     return {
-      textureDataUri: imageUrl,
+      textureDataUri,
     };
+}
+
+function createProceduralTexture(styleData: any): HTMLCanvasElement {
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d')!;
+  canvas.width = 512;
+  canvas.height = 512;
+  
+  const primaryColor = styleData.primaryColor || '#8B7355';
+  const secondaryColor = styleData.secondaryColor || '#D4A574';
+  const intensity = styleData.intensity || 0.5;
+  
+  // Fill with gradient
+  const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+  gradient.addColorStop(0, primaryColor);
+  gradient.addColorStop(1, secondaryColor);
+  ctx.fillStyle = gradient;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  
+  // Add noise pattern
+  const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  const data = imageData.data;
+  for (let i = 0; i < data.length; i += 4) {
+    const noise = Math.random() * intensity * 50;
+    data[i] += noise;     // R
+    data[i + 1] += noise; // G
+    data[i + 2] += noise; // B
+  }
+  ctx.putImageData(imageData, 0, 0);
+  
+  return canvas;
 }
 
 
